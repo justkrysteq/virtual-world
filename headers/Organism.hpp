@@ -17,8 +17,8 @@ public:
 	Organism(int strength, Position position);
 	Organism(Position position);
 	Organism(int strength, int initiative, Position position);
-	virtual void take_action() const = 0;
-	virtual void collide() const = 0;
+	virtual void take_action() = 0;
+	virtual void collide() = 0;
 
 	Position* get_available_positions() const;
 	Position choose_available_position() const;
@@ -29,4 +29,6 @@ public:
 	int get_strength() const;
 	int get_initiative() const;
 	int get_age() const;
+
+	virtual ~Organism();
 };

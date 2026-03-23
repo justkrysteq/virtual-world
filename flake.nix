@@ -34,7 +34,7 @@
 				make;
 			fi
 
-			./swallow-stars
+			./virtual-world
 		'';
 	in
 	{
