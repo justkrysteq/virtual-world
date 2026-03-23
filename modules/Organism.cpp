@@ -47,3 +47,6 @@ int Organism::get_initiative() const {
 int Organism::get_age() const {
 	return this->age;
 }
+
+Organism::~Organism() {
+}
