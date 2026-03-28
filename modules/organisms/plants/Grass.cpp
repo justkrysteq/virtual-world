@@ -1,7 +1,7 @@
 #include "../../../headers/organisms/plants/Grass.hpp"
 
-Grass::Grass() : Plant() {
+Grass::Grass() : Plant(GRASS_SYMBOL, PAIR_GRASS) {
 }
 
-Grass::Grass(Position position) : Plant(position) {
+Grass::Grass(Position position) : Plant(position, GRASS_SYMBOL, PAIR_GRASS) {
 }

@@ -1,5 +1,7 @@
 #include "../Plant.hpp"
 
+#define DANDELION_SYMBOL 'd'
+
 class Dandelion : public Plant {
 public:
 	Dandelion();

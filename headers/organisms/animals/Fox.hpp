@@ -2,6 +2,7 @@
 
 #define FOX_STRENGTH 3
 #define FOX_INITIATIVE 7
+#define FOX_SYMBOL 'F'
 
 class Fox : public Animal {
 public:

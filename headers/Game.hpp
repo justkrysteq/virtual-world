@@ -3,6 +3,9 @@
 #include <ncurses.h>
 #include "World.hpp"
 
+#define BORDER_WIDTH 1
+#define HEADER_HEIGHT 1
+
 class Game {
 private:
 	int turn_count;
@@ -12,6 +15,7 @@ private:
 	std::unique_ptr<World> world;
 	void update();
 	void init_screen();
+	void init_colors();
 	void save_state() const;
 	void load_state();
 	void handle_input();

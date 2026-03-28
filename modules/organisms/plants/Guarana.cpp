@@ -1,9 +1,9 @@
 #include "../../../headers/organisms/plants/Guarana.hpp"
 
-Guarana::Guarana() : Plant() {
+Guarana::Guarana() : Plant(GUARANA_SYMBOL, PAIR_GUARANA) {
 }
 
-Guarana::Guarana(Position position) : Plant(position) {
+Guarana::Guarana(Position position) : Plant(position, GUARANA_SYMBOL, PAIR_GUARANA) {
 }
 
 void Guarana::collide() {

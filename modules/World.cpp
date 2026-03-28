@@ -108,6 +108,10 @@ int World::get_height() const {
 	return this->world_height;
 }
 
+Organism *World::get_organism(int x, int y) const {
+	return this->organisms[y][x];
+}
+
 
 World::~World() {
 	for (int y = 0; y < world_width; y++) {

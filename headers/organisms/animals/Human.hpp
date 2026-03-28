@@ -2,6 +2,7 @@
 
 #define HUMAN_STRENGTH 5
 #define HUMAN_INITIATIVE 4
+#define HUMAN_SYMBOL 'H'
 
 class Human : public Animal {
 public:

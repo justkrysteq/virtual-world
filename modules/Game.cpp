@@ -23,14 +23,19 @@ void Game::run() {
 	printf("World size: %d %d\n", world_width, world_height);
 
 	this->init_screen();
-	this->world_window = subwin(this->screen, world_height+1, world_width+1, 0, 0);
+	mvwprintw(this->screen, 0, 0, "Virtual World");
+	this->world_window = subwin(this->screen, world_height+BORDER_WIDTH*2, world_width+BORDER_WIDTH*2, HEADER_HEIGHT, 0);
 	box(this->world_window, 0, 0);
+
+	this->draw_world();
+
 	wrefresh(this->world_window);
 
 	while (this->is_running) {
 		this->handle_input();
 	}
 
+	delwin(this->world_window);
 	delwin(this->screen);
 	endwin();
 }
@@ -39,6 +44,8 @@ void Game::init_screen() {
 	this->screen = initscr();
 	cbreak();
 	noecho();
+	curs_set(0);
+	this->init_colors();
 }
 
 void Game::handle_input() {
@@ -53,4 +60,46 @@ void Game::handle_input() {
 		default:
 			break;
 	}
+}
+
+void Game::draw_world() {
+	for (int y = 0; y < this->world->get_height(); y++) {
+		for (int x = 0; x < this->world->get_width(); x++) {
+			if (this->world->get_organism(x, y) != nullptr) {
+				wattron(this->world_window, COLOR_PAIR(this->world->get_organism(x, y)->get_color()));
+				mvwprintw(this->world_window, y+BORDER_WIDTH, x+BORDER_WIDTH, "%c", this->world->get_organism(x, y)->get_symbol());
+				wattroff(this->world_window, COLOR_PAIR(this->world->get_organism(x, y)->get_color()));
+			}
+		}
+	}
+}
+
+void Game::init_colors() {
+	start_color();
+
+	init_color(COLOR_ANTELOPE, 844, 712, 412);
+	init_color(COLOR_CYBER_SHEEP, 456, 692, 999);
+	init_color(COLOR_FOX, 999, 528, 0);
+	init_color(COLOR_HUMAN, 999, 784, 999);
+	init_color(COLOR_SHEEP, 999, 999, 999);
+	init_color(COLOR_TURTLE, 0, 440, 0);
+	init_color(COLOR_WOLF, 692, 692, 692);
+	init_color(COLOR_DANDELION, 999, 999, 236);
+	init_color(COLOR_GRASS, 552, 999, 308);
+	init_color(COLOR_GUARANA, 200, 999, 708);
+	init_color(COLOR_SOSNOWKIS_BORSCHT, 772, 180, 0);
+	init_color(COLOR_WOLFBERRIES, 544, 0, 999);
+
+	init_pair(PAIR_ANTELOPE, COLOR_BLACK, COLOR_ANTELOPE);
+	init_pair(PAIR_CYBER_SHEEP, COLOR_BLACK, COLOR_CYBER_SHEEP);
+	init_pair(PAIR_FOX, COLOR_BLACK, COLOR_FOX);
+	init_pair(PAIR_HUMAN, COLOR_BLACK, COLOR_HUMAN);
+	init_pair(PAIR_SHEEP, COLOR_BLACK, COLOR_SHEEP);
+	init_pair(PAIR_TURTLE, COLOR_BLACK, COLOR_TURTLE);
+	init_pair(PAIR_WOLF, COLOR_BLACK, COLOR_WOLF);
+	init_pair(PAIR_DANDELION, COLOR_BLACK, COLOR_DANDELION);
+	init_pair(PAIR_GRASS, COLOR_BLACK, COLOR_GRASS);
+	init_pair(PAIR_GUARANA, COLOR_BLACK, COLOR_GUARANA);
+	init_pair(PAIR_SOSNOWKIS_BORSCHT, COLOR_BLACK, COLOR_SOSNOWKIS_BORSCHT);
+	init_pair(PAIR_WOLFBERRIES, COLOR_BLACK, COLOR_WOLFBERRIES);
 }

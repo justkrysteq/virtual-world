@@ -50,6 +50,7 @@ public:
 	void next_turn();
 	int get_width() const;
 	int get_height() const;
+	Organism *get_organism(int x, int y) const;
 	// void next_organism();
 	~World();
 };
