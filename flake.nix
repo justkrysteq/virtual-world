@@ -22,7 +22,7 @@
 
 		run = pkgs.writeShellScriptBin "run" ''
 			#!${pkgs.bash}/bin/bash
-			./swallow-stars
+			./virtual-world
 		'';
 		
 		a = pkgs.writeShellScriptBin "a" ''

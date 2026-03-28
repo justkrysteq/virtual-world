@@ -1,10 +1,10 @@
 #include "../headers/Game.hpp"
 
-Game::Game() : turn_count(0) {
+Game::Game() : turn_count(0), is_running(true) {
 }
 
 void Game::run() {
-	printf("Welcome to the game!\n");
+	printf("Welcome to the game!\n"); // TODO: Implement that in ncurses too
 	printf("Input world size (default: 20 20): ");
 
 	int world_width, world_height;
@@ -22,21 +22,30 @@ void Game::run() {
 
 	printf("World size: %d %d\n", world_width, world_height);
 
-	// initscr();
-	// cbreak();
-	// noecho();
-	//
-	// bool is_running = true;
-	// while (is_running) {
-	// 	this->handle_input(&is_running);
-	// }
+	this->init_screen();
+	this->world_window = subwin(this->screen, world_height+1, world_width+1, 0, 0);
+	box(this->world_window, 0, 0);
+	wrefresh(this->world_window);
+
+	while (this->is_running) {
+		this->handle_input();
+	}
+
+	delwin(this->screen);
+	endwin();
 }
 
-void Game::handle_input(bool *is_running) {
+void Game::init_screen() {
+	this->screen = initscr();
+	cbreak();
+	noecho();
+}
+
+void Game::handle_input() {
 	char key = (char) wgetch(stdscr);
 	switch (key) {
 		case 'q':
-			*is_running = false;
+			this->is_running = false;
 			break;
 		case 'w':
 			this->world->next_turn();
