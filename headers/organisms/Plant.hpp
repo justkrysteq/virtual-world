@@ -1,5 +1,9 @@
 #pragma once
+
 #include "../Organism.hpp"
+
+#define PROBABILITY_OF_SPREADING 3
+#define MAX_PROBABILITY 100
 
 class Plant : public Organism {
 public:
@@ -14,4 +18,5 @@ public:
 
 	virtual void take_action();
 	virtual void collide(Organism *organism);
+	void spread();
 };

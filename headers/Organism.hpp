@@ -69,9 +69,10 @@ public:
 	);
 
 	virtual void take_action() = 0;
-	virtual void collide(Organism *organism) = 0;
+	virtual void collide(Organism *other);
 
 	Position get_random_offset();
+	Position get_random_free_offset(const Position *offsets, const int offsets_count);
 	Position get_position() const;
 	void set_position(Position position);
 

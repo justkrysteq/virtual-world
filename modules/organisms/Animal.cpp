@@ -26,14 +26,7 @@ void Animal::collide(Organism *other) {
 		this->breed(other);
 	}
 
-	if (this->get_strength() > other->get_strength()) {
-		other->die();
-
-		return;
-	}
-
-	this->die();
-	other->set_position(this->get_position());
+	Organism::collide(other);
 }
 
 void Animal::breed(Organism *other) {
@@ -77,27 +70,7 @@ Position Animal::choose_offset_for_offspring(Organism *other) {
 		}
 	}
 
-	bool occupied[OFFSET_COUNT*2];
-
-	for (int i = 0; i < offsets_count; i++) {
-		if (this->get_world()->get_organism(this->get_position().x + offsets[i].x, this->get_position().y + offsets[i].y) != nullptr) {
-			occupied[i] = true;
-		}
-	}
-
-	Position available_offsets[OFFSET_COUNT*2];
-	int available_offsets_count = 0;
-
-	for (int i = 0; i < offsets_count; i++) {
-		if (!occupied[i]) {
-			available_offsets[available_offsets_count] = offsets[i];
-			available_offsets_count++;
-		}
-	}
-
-	std::uniform_int_distribution<int> offset_index(0, available_offsets_count);
-
-	return available_offsets[offset_index(this->get_world()->get_rng())];
+	return this->get_random_free_offset(offsets, offsets_count);
 }
 
 bool Animal::get_omit_action() const {
