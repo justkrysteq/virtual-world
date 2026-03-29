@@ -3,5 +3,5 @@
 Guarana::Guarana(World *world, Position position) : Plant(world, position, GUARANA_SYMBOL, PAIR_GUARANA) {
 }
 
-void Guarana::collide() {
+void Guarana::collide(Organism *organism) {
 }

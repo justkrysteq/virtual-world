@@ -121,6 +121,10 @@ void World::set_organism(int x, int y, Organism *organism) {
 	this->organisms[y][x] = organism;
 }
 
+std::mt19937 &World::get_rng() {
+	return this->rng;
+}
+
 World::~World() {
 	if (this->organisms == nullptr) return;
 	for (int y = 0; y < this->world_height; y++) {

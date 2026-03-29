@@ -6,5 +6,5 @@ Human::Human(World *world, Position position) : Animal(world, position, HUMAN_SY
 void Human::take_action() {
 }
 
-void Human::collide() {
+void Human::collide(Organism *organism) {
 }

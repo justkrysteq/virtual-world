@@ -9,5 +9,5 @@ public:
 	Turtle(World *world, Position position);
 
 	void take_action() override;
-	void collide() override;
+	void collide(Organism *organism) override;
 };

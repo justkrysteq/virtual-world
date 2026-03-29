@@ -8,40 +8,14 @@ Organism::Organism(
 	int color,
 	int strength,
 	int initiative,
-	int age,
-	bool is_alive
-) : strength(strength), initiative(initiative), age(age), color(color), is_alive(is_alive), symbol(symbol), position(position), world(world) {
+	int age
+) : world(world), position(position), symbol(symbol), color(color), strength(strength), initiative(initiative), age(age) {
 }
-
-// Position* Organism::get_available_positions() const {
-// }
-//
-// Position Organism::choose_available_position() const {
-// }
 
 Position Organism::get_random_offset() {
 	std::uniform_int_distribution<int> offset(0, 7);
 
-	switch (offset(this->rng)) {
-		case 0:
-			return {-1, 0};
-		case 1:
-			return {1, 0};
-		case 2:
-			return {0, -1};
-		case 3:
-			return {0, 1};
-		case 4:
-			return {-1, -1};
-		case 5:
-			return {1, -1};
-		case 6:
-			return {-1, 1};
-		case 7:
-			return {1, 1};
-		default:
-			return {0, 0};
-	}
+	return Organism::all_offsets[offset(this->world->get_rng())];
 }
 
 Position Organism::get_position() const {
@@ -53,8 +27,10 @@ void Organism::set_position(Position position) {
 	this->world->set_organism(this->position.x, this->position.y, this);
 }
 
-bool Organism::get_is_alive() const {
-	return this->is_alive;
+void Organism::die() {
+	this->world->set_organism(this->position.x, this->position.y, nullptr);
+
+	delete this;
 }
 
 int Organism::get_strength() const {
@@ -77,8 +53,39 @@ int Organism::get_color() const {
 	return this->color;
 }
 
-const World *Organism::get_world() const {
+World *Organism::get_world() {
 	return this->world;
+}
+
+enum OrganismType Organism::get_type() const {
+	switch (this->symbol) {
+		case ANTELOPE_SYMBOL:
+			return ANTELOPE;
+		case CYBER_SHEEP_SYMBOL:
+			return CYBER_SHEEP;
+		case FOX_SYMBOL:
+			return FOX;
+		case HUMAN_SYMBOL:
+			return HUMAN;
+		case SHEEP_SYMBOL:
+			return SHEEP;
+		case TURTLE_SYMBOL:
+			return TURTLE;
+		case WOLF_SYMBOL:
+			return WOLF;
+		case DANDELION_SYMBOL:
+			return DANDELION;
+		case GRASS_SYMBOL:
+			return GRASS;
+		case GUARANA_SYMBOL:
+			return GUARANA;
+		case SOSNOWKIS_BORSCHT_SYMBOL:
+			return SOSNOWKIS_BORSCHT;
+		case WOLFBERRIES_SYMBOL:
+			return WOLFBERRIES;
+		default:
+			return HUMAN;
+	}
 }
 
 Organism::~Organism() {

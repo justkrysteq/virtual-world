@@ -6,5 +6,5 @@ Turtle::Turtle(World *world, Position position) : Animal(world, position, TURTLE
 void Turtle::take_action() {
 }
 
-void Turtle::collide() {
+void Turtle::collide(Organism *organism) {
 }

@@ -6,5 +6,5 @@ Plant::Plant(World *world, Position position, char symbol, int color, int streng
 void Plant::take_action() {
 }
 
-void Plant::collide() {
+void Plant::collide(Organism *organism) {
 }

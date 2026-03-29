@@ -19,28 +19,12 @@
 #define DEFAULT_WORLD_WIDTH 20
 #define DEFAULT_WORLD_HEIGHT 20
 
-enum OrganismType {
-	ANTELOPE,
-	CYBER_SHEEP,
-	FOX,
-	HUMAN,
-	SHEEP,
-	TURTLE,
-	WOLF,
-	DANDELION,
-	GRASS,
-	GUARANA,
-	SOSNOWKIS_BORSCHT,
-	WOLFBERRIES
-};
-
 class World {
 private:
 	int world_width;
 	int world_height;
 	// int current_organism_index;
 	Organism ***organisms;
-	void spawn_organism(enum OrganismType type, Position position);
 	void initial_spawn_all();
 	std::mt19937 rng{std::random_device{}()};
 
@@ -53,5 +37,8 @@ public:
 	Organism *get_organism(int x, int y) const;
 	void set_organism(int x, int y, Organism *organism);
 	// void next_organism();
+	std::mt19937 &get_rng();
+	void spawn_organism(enum OrganismType type, Position position);
+
 	~World();
 };

@@ -13,5 +13,5 @@ public:
 	);
 
 	virtual void take_action();
-	virtual void collide();
+	virtual void collide(Organism *organism);
 };

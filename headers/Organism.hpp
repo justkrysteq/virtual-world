@@ -3,6 +3,23 @@
 #include <random>
 #include "colors.hpp"
 
+#define OFFSET_COUNT 8
+
+enum OrganismType {
+	ANTELOPE,
+	CYBER_SHEEP,
+	FOX,
+	HUMAN,
+	SHEEP,
+	TURTLE,
+	WOLF,
+	DANDELION,
+	GRASS,
+	GUARANA,
+	SOSNOWKIS_BORSCHT,
+	WOLFBERRIES
+};
+
 class World;
 
 typedef struct Position {
@@ -11,6 +28,10 @@ typedef struct Position {
 
 	Position operator+(const Position& other) const {
 		return {this->x + other.x, this->y + other.y};
+	}
+
+	Position operator-(const Position& other) const {
+		return {this->x - other.x, this->y - other.y};
 	}
 
 	Position operator+=(const Position& other) {
@@ -31,12 +52,12 @@ typedef struct Position {
 class Organism {
 private:
 	int strength, initiative, age, color;
-	bool is_alive;
 	char symbol;
 	Position position;
 	World *world;
-	std::mt19937 rng{std::random_device{}()};
 public:
+	inline static constexpr Position all_offsets[OFFSET_COUNT] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}, {-1, -1}, {1, -1}, {-1, 1}, {1, 1}};
+
 	Organism(
 		World *world = nullptr,
 		Position position = {0, 0},
@@ -44,26 +65,25 @@ public:
 		int color = 0,
 		int strength = 0,
 		int initiative = 0,
-		int age = 0,
-		bool is_alive = true
+		int age = 0
 	);
 
 	virtual void take_action() = 0;
-	virtual void collide() = 0;
+	virtual void collide(Organism *organism) = 0;
 
-	Position* get_available_positions() const;
-	Position choose_available_position() const;
 	Position get_random_offset();
 	Position get_position() const;
 	void set_position(Position position);
 
-	bool get_is_alive() const;
 	int get_strength() const;
 	int get_initiative() const;
 	int get_age() const;
 	char get_symbol() const;
 	int get_color() const;
-	const World *get_world() const;
+	World *get_world();
+	enum OrganismType get_type() const;
+
+	void die();
 
 	virtual ~Organism();
 };

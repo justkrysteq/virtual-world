@@ -6,5 +6,5 @@ SosnowskisBorscht::SosnowskisBorscht(World *world, Position position) : Plant(wo
 void SosnowskisBorscht::take_action() {
 }
 
-void SosnowskisBorscht::collide() {
+void SosnowskisBorscht::collide(Organism *organism) {
 }

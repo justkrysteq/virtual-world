@@ -7,5 +7,5 @@ class Wolfberries : public Plant {
 public:
 	Wolfberries(World *world, Position position);
 
-	void collide() override;
+	void collide(Organism *organism) override;
 };

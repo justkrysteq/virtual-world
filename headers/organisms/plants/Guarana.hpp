@@ -6,5 +6,5 @@ class Guarana : public Plant {
 public:
 	Guarana(World *world, Position position);
 
-	void collide() override;
+	void collide(Organism *organism) override;
 };
