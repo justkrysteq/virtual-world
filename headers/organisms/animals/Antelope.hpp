@@ -6,8 +6,7 @@
 
 class Antelope : public Animal {
 public:
-	Antelope();
-	Antelope(Position position);
+	Antelope(World *world, Position position);
 
 	void take_action() override;
 	void collide() override;

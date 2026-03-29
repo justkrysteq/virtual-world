@@ -21,40 +21,40 @@ World::World(int world_width, int world_height) {
 void World::spawn_organism(enum OrganismType type, Position position) {
 	switch (type) {
 		case ANTELOPE:
-			this->organisms[position.y][position.x] = new Antelope(position);
+			this->organisms[position.y][position.x] = new Antelope(this, position);
 			break;
 		case CYBER_SHEEP:
-			this->organisms[position.y][position.x] = new CyberSheep(position);
+			this->organisms[position.y][position.x] = new CyberSheep(this, position);
 			break;
 		case FOX:
-			this->organisms[position.y][position.x] = new Fox(position);
+			this->organisms[position.y][position.x] = new Fox(this, position);
 			break;
 		case HUMAN:
-			this->organisms[position.y][position.x] = new Human(position);
+			this->organisms[position.y][position.x] = new Human(this, position);
 			break;
 		case SHEEP:
-			this->organisms[position.y][position.x] = new Sheep(position);
+			this->organisms[position.y][position.x] = new Sheep(this, position);
 			break;
 		case TURTLE:
-			this->organisms[position.y][position.x] = new Turtle(position);
+			this->organisms[position.y][position.x] = new Turtle(this, position);
 			break;
 		case WOLF:
-			this->organisms[position.y][position.x] = new Wolf(position);
+			this->organisms[position.y][position.x] = new Wolf(this, position);
 			break;
 		case DANDELION:
-			this->organisms[position.y][position.x] = new Dandelion(position);
+			this->organisms[position.y][position.x] = new Dandelion(this, position);
 			break;
 		case GRASS:
-			this->organisms[position.y][position.x] = new Grass(position);
+			this->organisms[position.y][position.x] = new Grass(this, position);
 			break;
 		case GUARANA:
-			this->organisms[position.y][position.x] = new Guarana(position);
+			this->organisms[position.y][position.x] = new Guarana(this, position);
 			break;
 		case SOSNOWKIS_BORSCHT:
-			this->organisms[position.y][position.x] = new SosnowskisBorscht(position);
+			this->organisms[position.y][position.x] = new SosnowskisBorscht(this, position);
 			break;
 		case WOLFBERRIES:
-			this->organisms[position.y][position.x] = new Wolfberries(position);
+			this->organisms[position.y][position.x] = new Wolfberries(this, position);
 			break;
 	}
 }
@@ -62,6 +62,7 @@ void World::spawn_organism(enum OrganismType type, Position position) {
 void World::initial_spawn_all() {
 	Position used_positions[INITIAL_SPAWN_COUNT*ORGANISM_TYPE_COUNT];
 	int used_positions_count = 0;
+
 	std::uniform_int_distribution<int> width_dist(0, this->world_width-1);
 	std::uniform_int_distribution<int> height_dist(0, this->world_height-1);
 
@@ -112,16 +113,24 @@ Organism *World::get_organism(int x, int y) const {
 	return this->organisms[y][x];
 }
 
+void World::set_organism(int x, int y, Organism *organism) {
+	if (this->organisms[y][x] != nullptr) {
+		delete this->organisms[y][x];
+	}
+
+	this->organisms[y][x] = organism;
+}
 
 World::~World() {
-	for (int y = 0; y < world_width; y++) {
-		for (int x = 0; x < world_height; x++) {
-			if (this->organisms[y][x] != nullptr) {
+	if (this->organisms == nullptr) return;
+	for (int y = 0; y < this->world_height; y++) {
+		if (this->organisms[y] != nullptr) {
+			for (int x = 0; x < this->world_width; x++) {
 				delete this->organisms[y][x];
 			}
-		}
 
-		free(this->organisms[y]);
+			free(this->organisms[y]);
+		}
 	}
 	free(this->organisms);
 }

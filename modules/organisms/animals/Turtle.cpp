@@ -1,9 +1,6 @@
 #include "../../../headers/organisms/animals/Turtle.hpp"
 
-Turtle::Turtle() : Animal(TURTLE_STRENGTH, TURTLE_INITIATIVE, TURTLE_SYMBOL, PAIR_TURTLE) {
-}
-
-Turtle::Turtle(Position position) : Animal(TURTLE_STRENGTH, TURTLE_INITIATIVE, position, TURTLE_SYMBOL, PAIR_TURTLE) {
+Turtle::Turtle(World *world, Position position) : Animal(world, position, TURTLE_SYMBOL, PAIR_TURTLE, TURTLE_STRENGTH, TURTLE_INITIATIVE) {
 }
 
 void Turtle::take_action() {

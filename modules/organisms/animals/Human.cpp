@@ -1,9 +1,6 @@
 #include "../../../headers/organisms/animals/Human.hpp"
 
-Human::Human() : Animal(HUMAN_STRENGTH, HUMAN_INITIATIVE, HUMAN_SYMBOL, PAIR_HUMAN) {
-}
-
-Human::Human(Position position) : Animal(HUMAN_STRENGTH, HUMAN_INITIATIVE, position, HUMAN_SYMBOL, PAIR_HUMAN) {
+Human::Human(World *world, Position position) : Animal(world, position, HUMAN_SYMBOL, PAIR_HUMAN, HUMAN_STRENGTH, HUMAN_INITIATIVE) {
 }
 
 void Human::take_action() {

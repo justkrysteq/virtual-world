@@ -3,14 +3,14 @@
 
 class Plant : public Organism {
 public:
-	Plant();
-	Plant(Position position);
-	Plant(int strength, Position position);
-	Plant(int strength);
-	Plant(char symbol, int color);
-	Plant(Position position, char symbol, int color);
-	Plant(int strength, Position position, char symbol, int color);
-	Plant(int strength, char symbol, int color);
+	Plant(
+		World *world,
+		Position position,
+		char symbol,
+		int color,
+		int strength = 0,
+		int initiative = 0
+	);
 
 	virtual void take_action();
 	virtual void collide();

@@ -4,8 +4,7 @@
 
 class Dandelion : public Plant {
 public:
-	Dandelion();
-	Dandelion(Position position);
+	Dandelion(World *world, Position position);
 
 	void take_action() override;
 };

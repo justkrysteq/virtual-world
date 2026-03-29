@@ -1,8 +1,4 @@
 #include "../../../headers/organisms/animals/Wolf.hpp"
 
-Wolf::Wolf() : Animal(WOLF_STRENGTH, WOLF_INITIATIVE, WOLF_SYMBOL, PAIR_WOLF) {
+Wolf::Wolf(World *world, Position position) : Animal(world, position, WOLF_SYMBOL, PAIR_WOLF, WOLF_STRENGTH, WOLF_INITIATIVE) {
 }
-
-Wolf::Wolf(Position position) : Animal(WOLF_STRENGTH, WOLF_INITIATIVE, position, WOLF_SYMBOL, PAIR_WOLF) {
-}
-

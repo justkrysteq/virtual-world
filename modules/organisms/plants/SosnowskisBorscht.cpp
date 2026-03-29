@@ -1,9 +1,6 @@
 #include "../../../headers/organisms/plants/SosnowskisBorscht.hpp"
 
-SosnowskisBorscht::SosnowskisBorscht() : Plant(SOSNOWKIS_BORSCHT_STRENGTH, SOSNOWKIS_BORSCHT_SYMBOL, PAIR_SOSNOWKIS_BORSCHT) {
-}
-
-SosnowskisBorscht::SosnowskisBorscht(Position position) : Plant(SOSNOWKIS_BORSCHT_STRENGTH, position, SOSNOWKIS_BORSCHT_SYMBOL, PAIR_SOSNOWKIS_BORSCHT) {
+SosnowskisBorscht::SosnowskisBorscht(World *world, Position position) : Plant(world, position, SOSNOWKIS_BORSCHT_SYMBOL, PAIR_SOSNOWKIS_BORSCHT, SOSNOWKIS_BORSCHT_STRENGTH) {
 }
 
 void SosnowskisBorscht::take_action() {

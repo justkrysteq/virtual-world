@@ -1,9 +1,6 @@
 #include "../../../headers/organisms/plants/Wolfberries.hpp"
 
-Wolfberries::Wolfberries() : Plant(WOLFBERRIES_STRENGTH, WOLFBERRIES_SYMBOL, PAIR_WOLFBERRIES) {
-}
-
-Wolfberries::Wolfberries(Position position) : Plant(WOLFBERRIES_STRENGTH, position, WOLFBERRIES_SYMBOL, PAIR_WOLFBERRIES) {
+Wolfberries::Wolfberries(World *world, Position position) : Plant(world, position, WOLFBERRIES_SYMBOL, PAIR_WOLFBERRIES, WOLFBERRIES_STRENGTH) {
 }
 
 void Wolfberries::collide() {

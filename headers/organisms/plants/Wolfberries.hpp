@@ -5,8 +5,7 @@
 
 class Wolfberries : public Plant {
 public:
-	Wolfberries();
-	Wolfberries(Position position);
+	Wolfberries(World *world, Position position);
 
 	void collide() override;
 };

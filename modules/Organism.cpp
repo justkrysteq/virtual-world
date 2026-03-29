@@ -1,36 +1,16 @@
 #include "../headers/Organism.hpp"
+#include "../headers/World.hpp"
 
-Organism::Organism() : strength(0), initiative(0), age(0), is_alive(true), position({0, 0}), symbol('?'), color(0) {
-}
-
-Organism::Organism(int strength, int initiative) : strength(strength), initiative(initiative), age(0), is_alive(true), position({0, 0}), symbol('?'), color(0) {
-}
-
-Organism::Organism(int strength, int initiative, Position position) : strength(strength), initiative(initiative), age(0), is_alive(true), position(position), symbol('?'), color(0) {
-}
-
-Organism::Organism(int strength) : strength(strength), initiative(0), age(0), is_alive(true), position({0, 0}), symbol('?'), color(0) {
-}
-
-Organism::Organism(int strength, Position position) : strength(strength), initiative(0), age(0), is_alive(true), position(position), symbol('?'), color(0) {
-}
-
-Organism::Organism(Position position) : strength(0), initiative(0), age(0), is_alive(true), position(position), symbol('?'), color(0) {
-}
-
-Organism::Organism(int strength, int initiative, char symbol, int color) : strength(strength), initiative(initiative), age(0), is_alive(true), position({0, 0}), symbol(symbol), color(color) {
-}
-
-Organism::Organism(int strength, int initiative, Position position, char symbol, int color) : strength(strength), initiative(initiative), age(0), is_alive(true), position(position), symbol(symbol), color(color) {
-}
-
-Organism::Organism(int strength, char symbol, int color) : strength(strength), initiative(0), age(0), is_alive(true), position({0, 0}), symbol(symbol), color(color) {
-}
-
-Organism::Organism(int strength, Position position, char symbol, int color) : strength(strength), initiative(0), age(0), is_alive(true), position(position), symbol(symbol), color(color) {
-}
-
-Organism::Organism(Position position, char symbol, int color) : strength(0), initiative(0), age(0), is_alive(true), position(position), symbol(symbol), color(color) {
+Organism::Organism(
+	World *world,
+	Position position,
+	char symbol,
+	int color,
+	int strength,
+	int initiative,
+	int age,
+	bool is_alive
+) : strength(strength), initiative(initiative), age(age), color(color), is_alive(is_alive), symbol(symbol), position(position), world(world) {
 }
 
 // Position* Organism::get_available_positions() const {
@@ -39,12 +19,38 @@ Organism::Organism(Position position, char symbol, int color) : strength(0), ini
 // Position Organism::choose_available_position() const {
 // }
 
+Position Organism::get_random_offset() {
+	std::uniform_int_distribution<int> offset(0, 7);
+
+	switch (offset(this->rng)) {
+		case 0:
+			return {-1, 0};
+		case 1:
+			return {1, 0};
+		case 2:
+			return {0, -1};
+		case 3:
+			return {0, 1};
+		case 4:
+			return {-1, -1};
+		case 5:
+			return {1, -1};
+		case 6:
+			return {-1, 1};
+		case 7:
+			return {1, 1};
+		default:
+			return {0, 0};
+	}
+}
+
 Position Organism::get_position() const {
 	return this->position;
 }
 
 void Organism::set_position(Position position) {
 	this->position = position;
+	this->world->set_organism(this->position.x, this->position.y, this);
 }
 
 bool Organism::get_is_alive() const {
@@ -69,6 +75,10 @@ char Organism::get_symbol() const {
 
 int Organism::get_color() const {
 	return this->color;
+}
+
+const World *Organism::get_world() const {
+	return this->world;
 }
 
 Organism::~Organism() {

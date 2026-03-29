@@ -1,9 +1,6 @@
 #include "../../../headers/organisms/animals/Antelope.hpp"
 
-Antelope::Antelope() : Animal(ANTELOPE_STRENGTH, ANTELOPE_INITIATIVE, ANTELOPE_SYMBOL, PAIR_ANTELOPE) {
-}
-
-Antelope::Antelope(Position position) : Animal(ANTELOPE_STRENGTH, ANTELOPE_INITIATIVE, position, ANTELOPE_SYMBOL, PAIR_ANTELOPE) {
+Antelope::Antelope(World *world, Position position) : Animal(world, position, ANTELOPE_SYMBOL, PAIR_ANTELOPE, ANTELOPE_STRENGTH, ANTELOPE_INITIATIVE) {
 }
 
 void Antelope::take_action() {

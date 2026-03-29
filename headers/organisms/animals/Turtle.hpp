@@ -6,8 +6,7 @@
 
 class Turtle : public Animal {
 public:
-	Turtle();
-	Turtle(Position position);
+	Turtle(World *world, Position position);
 
 	void take_action() override;
 	void collide() override;

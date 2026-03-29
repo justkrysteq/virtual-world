@@ -6,8 +6,7 @@
 
 class CyberSheep : public Animal {
 public:
-	CyberSheep();
-	CyberSheep(Position position);
+	CyberSheep(World *world, Position position);
 
 	void take_action() override;
 };

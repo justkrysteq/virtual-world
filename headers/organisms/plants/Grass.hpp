@@ -4,6 +4,5 @@
 
 class Grass : public Plant {
 public:
-	Grass();
-	Grass(Position position);
+	Grass(World *world, Position position);
 };

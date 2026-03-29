@@ -6,8 +6,7 @@
 
 class Fox : public Animal {
 public:
-	Fox();
-	Fox(Position position);
+	Fox(World *world, Position position);
 
 	void take_action() override;
 };

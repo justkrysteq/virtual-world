@@ -51,6 +51,7 @@ public:
 	int get_width() const;
 	int get_height() const;
 	Organism *get_organism(int x, int y) const;
+	void set_organism(int x, int y, Organism *organism);
 	// void next_organism();
 	~World();
 };

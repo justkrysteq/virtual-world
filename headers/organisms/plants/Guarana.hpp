@@ -4,8 +4,7 @@
 
 class Guarana : public Plant {
 public:
-	Guarana();
-	Guarana(Position position);
+	Guarana(World *world, Position position);
 
 	void collide() override;
 };

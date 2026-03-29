@@ -6,6 +6,5 @@
 
 class Wolf : public Animal {
 public:
-	Wolf();
-	Wolf(Position position);
+	Wolf(World *world, Position position);
 };

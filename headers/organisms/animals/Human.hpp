@@ -6,8 +6,7 @@
 
 class Human : public Animal {
 public:
-	Human();
-	Human(Position position);
+	Human(World *world, Position position);
 
 	void take_action() override;
 	void collide() override;

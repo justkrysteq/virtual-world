@@ -5,8 +5,7 @@
 
 class SosnowskisBorscht : public Plant {
 public:
-	SosnowskisBorscht();
-	SosnowskisBorscht(Position position);
+	SosnowskisBorscht(World *world, Position position);
 
 	void take_action() override;
 	void collide() override;

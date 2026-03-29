@@ -1,9 +1,6 @@
 #include "../../../headers/organisms/animals/Fox.hpp"
 
-Fox::Fox() : Animal(FOX_STRENGTH, FOX_INITIATIVE, FOX_SYMBOL, PAIR_FOX) {
-}
-
-Fox::Fox(Position position) : Animal(FOX_STRENGTH, FOX_INITIATIVE, position, FOX_SYMBOL, PAIR_FOX) {
+Fox::Fox(World *world, Position position) : Animal(world, position, FOX_SYMBOL, PAIR_FOX, FOX_STRENGTH, FOX_INITIATIVE) {
 }
 
 void Fox::take_action() {

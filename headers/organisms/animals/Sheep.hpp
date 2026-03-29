@@ -6,6 +6,5 @@
 
 class Sheep : public Animal {
 public:
-	Sheep();
-	Sheep(Position position);
+	Sheep(World *world, Position position);
 };

@@ -3,11 +3,14 @@
 
 class Animal : public Organism {
 public:
-	Animal();
-	Animal(int strength, int initiative);
-	Animal(int strength, int initiative, Position position);
-	Animal(int strength, int initiative, char symbol, int color);
-	Animal(int strength, int initiative, Position position, char symbol, int color);
+	Animal(
+		World *world,
+		Position position,
+		char symbol,
+		int color,
+		int strength = 0,
+		int initiative = 0
+	);
 
 	virtual void take_action();
 	virtual void collide();
