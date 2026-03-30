@@ -6,10 +6,10 @@ World::World() : World(DEFAULT_WORLD_WIDTH, DEFAULT_WORLD_HEIGHT) {
 World::World(int world_width, int world_height) {
 	this->world_width = world_width;
 	this->world_height = world_height;
-	this->organisms = (Organism ***) malloc(world_height * sizeof(Organism**));
+	this->organisms = (Organism ***) malloc(world_height * sizeof(Organism **));
 
 	for (int y = 0; y < this->world_height; y++) {
-		this->organisms[y] = (Organism **) malloc(world_width * sizeof(Organism*));
+		this->organisms[y] = (Organism **) malloc(world_width * sizeof(Organism *));
 		for (int x = 0; x < this->world_width; x++) {
 			this->organisms[y][x] = nullptr;
 		}
@@ -93,12 +93,43 @@ void World::initial_spawn_all() {
 			used_positions[used_positions_count] = position;
 			used_positions_count++;
 
-			spawn_organism((OrganismType) type, position);
+			// spawn_organism((OrganismType) type, position);
 		}
 	}
+
+	spawn_organism(WOLF, Position{10, 10});
+	spawn_organism(WOLF, Position{10, 11});
 }
 
 void World::next_turn() {
+	Organism **organisms_to_take_action = (Organism **) malloc(this->world_height*this->world_width * sizeof(Organism *));
+	int organisms_count = 0;
+
+	for (int y = 0; y < this->world_height; y++) {
+		for (int x = 0; x < this->world_width; x++) {
+			Organism *organism = this->get_organism(x, y);
+
+			if (organism != nullptr) {
+				organisms_to_take_action[organisms_count] = organism;
+				mvwprintw(stdscr, 32+organisms_count, 0, "Found: %c", organism->get_symbol());
+				organisms_count++;
+			}
+		}
+	}
+
+	mvwprintw(stdscr, 30, 0, "Organisms: %d", organisms_count);
+
+	if (organisms_count > 1) {
+		qsort(organisms_to_take_action, organisms_count, sizeof(Organism *), this->compare_organisms);
+	}
+
+	// for (int i = 0; i < organisms_count; i++) {
+	// 	organisms_to_take_action[i]->take_action();
+	// }
+	
+	((Animal *) organisms_to_take_action[1])->collide(organisms_to_take_action[0]);
+
+	free(organisms_to_take_action);
 }
 
 int World::get_width() const {
@@ -114,10 +145,6 @@ Organism *World::get_organism(int x, int y) const {
 }
 
 void World::set_organism(int x, int y, Organism *organism) {
-	if (this->organisms[y][x] != nullptr) {
-		delete this->organisms[y][x];
-	}
-
 	this->organisms[y][x] = organism;
 }
 
@@ -125,16 +152,47 @@ std::mt19937 &World::get_rng() {
 	return this->rng;
 }
 
+int World::compare_organisms(const void *a, const void *b) { // TODO: Check if it starts with the highest
+	Organism *organism_a = (Organism *) a;
+	Organism *organism_b = (Organism *) b;
+
+	if (organism_a->get_initiative() > organism_b->get_initiative()) {
+		return 1;
+	}
+
+	if (organism_a->get_initiative() < organism_b->get_initiative()) {
+		return -1;
+	}
+
+	if (organism_a->get_age() > organism_b->get_age()) {
+		return 1;
+	}
+
+	if (organism_a->get_age() < organism_b->get_age()) {
+		return -1;
+	}
+
+	return 0;
+}
+
 World::~World() {
-	if (this->organisms == nullptr) return;
+	if (this->organisms == nullptr) {
+		return;
+	}
+
 	for (int y = 0; y < this->world_height; y++) {
 		if (this->organisms[y] != nullptr) {
-			for (int x = 0; x < this->world_width; x++) {
-				delete this->organisms[y][x];
-			}
+			// for (int x = 0; x < this->world_width; x++) {
+			// 	if (this->organisms[y][x] != nullptr) {
+			// 		printf("Deleting organism at %d %d\n", x, y);
+			// 		printf("Organism: %c\n", this->organisms[y][x]->get_symbol());
+			// 		delete this->organisms[y][x];
+			// 	}
+			// }
 
 			free(this->organisms[y]);
 		}
 	}
+
 	free(this->organisms);
 }

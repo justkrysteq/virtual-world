@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <random>
+#include <ncurses.h>
 
 #include "organisms/animals/Antelope.hpp"
 #include "organisms/animals/CyberSheep.hpp"
@@ -27,6 +28,7 @@ private:
 	Organism ***organisms;
 	void initial_spawn_all();
 	std::mt19937 rng{std::random_device{}()};
+	static int compare_organisms(const void *a, const void *b);
 
 public:
 	World();

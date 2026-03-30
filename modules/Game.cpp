@@ -8,11 +8,13 @@ void Game::run() {
 	printf("Input world size (default: 20 20): ");
 
 	int world_width, world_height;
-	if (scanf("%d %d", &world_width, &world_height) != 2) {
-		printf("Invalid world size!\n");
-		world_width = DEFAULT_WORLD_WIDTH;
-		world_height = DEFAULT_WORLD_HEIGHT;
-	}
+	// if (scanf("%d %d", &world_width, &world_height) != 2) {
+	// 	printf("Invalid world size!\n");
+	// 	world_width = DEFAULT_WORLD_WIDTH;
+	// 	world_height = DEFAULT_WORLD_HEIGHT;
+	// }
+	world_width = DEFAULT_WORLD_WIDTH*2;
+	world_height = DEFAULT_WORLD_HEIGHT;
 
 	if (world_width == 0 || world_height == 0) {
 		this->world = std::make_unique<World>(DEFAULT_WORLD_WIDTH, DEFAULT_WORLD_HEIGHT);
@@ -25,11 +27,8 @@ void Game::run() {
 	this->init_screen();
 	mvwprintw(this->screen, 0, 0, "Virtual World");
 	this->world_window = subwin(this->screen, world_height+BORDER_WIDTH*2, world_width+BORDER_WIDTH*2, HEADER_HEIGHT, 0);
-	box(this->world_window, 0, 0);
 
 	this->draw_world();
-
-	wrefresh(this->world_window);
 
 	while (this->is_running) {
 		this->handle_input();
@@ -54,8 +53,9 @@ void Game::handle_input() {
 		case 'q':
 			this->is_running = false;
 			break;
-		case 'w':
+		case 'n':
 			this->world->next_turn();
+			this->draw_world();
 			break;
 		default:
 			break;
@@ -63,6 +63,9 @@ void Game::handle_input() {
 }
 
 void Game::draw_world() {
+	werase(this->world_window);
+	box(this->world_window, 0, 0);
+
 	for (int y = 0; y < this->world->get_height(); y++) {
 		for (int x = 0; x < this->world->get_width(); x++) {
 			if (this->world->get_organism(x, y) != nullptr) {
@@ -72,6 +75,8 @@ void Game::draw_world() {
 			}
 		}
 	}
+
+	wrefresh(this->world_window);
 }
 
 void Game::init_colors() {

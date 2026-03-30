@@ -1,5 +1,5 @@
 {
-	description = "Swallow Stars";
+	description = "Virtual World";
 
 	inputs = {
 		nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";

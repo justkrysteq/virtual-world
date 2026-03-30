@@ -1,6 +1,5 @@
 #pragma once
 
-#include <typeinfo>
 #include "../Organism.hpp"
 
 class Animal : public Organism {
@@ -8,8 +7,8 @@ private:
 	bool omit_action = false;
 
 	void breed(Organism *other);
-	Position choose_offset_for_offspring(Organism *other);
 public:
+	Position choose_offset_for_offspring(Organism *other);
 	Animal(
 		World *world,
 		Position position,

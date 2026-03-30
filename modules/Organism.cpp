@@ -22,9 +22,10 @@ Position Organism::get_position() const {
 	return this->position;
 }
 
-void Organism::set_position(Position position) {
-	this->position = position;
-	this->world->set_organism(this->position.x, this->position.y, this);
+void Organism::move(Position new_position) {
+	this->world->set_organism(this->position.x, this->position.y, nullptr);
+	this->world->set_organism(new_position.x, new_position.y, this);
+	this->position = new_position;
 }
 
 void Organism::die() {
@@ -96,7 +97,7 @@ void Organism::collide(Organism *other) {
 	}
 
 	this->die();
-	other->set_position(this->get_position());
+	other->move(this->get_position());
 }
 
 Position Organism::get_random_free_offset(const Position *offsets, const int offsets_count) {
@@ -105,6 +106,8 @@ Position Organism::get_random_free_offset(const Position *offsets, const int off
 	for (int i = 0; i < offsets_count; i++) {
 		if (this->get_world()->get_organism(this->get_position().x + offsets[i].x, this->get_position().y + offsets[i].y) != nullptr) {
 			occupied[i] = true;
+		} else {
+			occupied[i] = false;
 		}
 	}
 

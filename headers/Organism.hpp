@@ -74,7 +74,7 @@ public:
 	Position get_random_offset();
 	Position get_random_free_offset(const Position *offsets, const int offsets_count);
 	Position get_position() const;
-	void set_position(Position position);
+	void move(Position new_position);
 
 	int get_strength() const;
 	int get_initiative() const;

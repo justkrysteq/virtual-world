@@ -4,7 +4,7 @@
 Animal::Animal(World *world, Position position, char symbol, int color, int strength, int initiative) : Organism(world, position, symbol, color, strength, initiative) {
 }
 
-void Animal::take_action() {
+void Animal::take_action() { // TODO: IMPORTANT: YOU NEED TO CHECK WORLD BOUNDARIES
 	if (this->get_omit_action()) {
 		this->set_omit_action(false);
 		return;
@@ -16,20 +16,21 @@ void Animal::take_action() {
 	if (this->get_world()->get_organism(new_position.x, new_position.y) != nullptr) {
 		this->get_world()->get_organism(new_position.x, new_position.y)->collide(this);
 	} else {
-		this->set_position(new_position);
+		this->move(new_position);
 		// TODO: Print: Organism moved to {new_position.x, new_position.y}
 	}
 }
 
 void Animal::collide(Organism *other) {
-	if (typeid(this) == typeid(other)) {
+	if (this->get_type() == other->get_type()) {
 		this->breed(other);
+		return;
 	}
 
 	Organism::collide(other);
 }
 
-void Animal::breed(Organism *other) {
+void Animal::breed(Organism *other) { // TODO: Check if positions for offspring are valid
 	this->set_omit_action(true);
 
 	Position offset_for_offspring = this->choose_offset_for_offspring(other);
@@ -38,15 +39,20 @@ void Animal::breed(Organism *other) {
 	return;
 }
 
-Position Animal::choose_offset_for_offspring(Organism *other) {
+Position Animal::choose_offset_for_offspring(Organism *other) { // Sets would solve this way easier
 	Position offsets[OFFSET_COUNT*2];
 	Position offset_to_other = this->get_position() - other->get_position();
+	
+	int offsets_count = 0;
 
 	for (int i = 0; i < OFFSET_COUNT; i++) {
+		if (offsets[i] == offset_to_other) {
+			continue;
+		}
+
 		offsets[i] = Organism::all_offsets[i];
+		offsets_count++;
 	}
-	
-	int offsets_count = OFFSET_COUNT;
 
 	for (int i = 0; i < OFFSET_COUNT; i++) {
 		Position other_offset = Organism::all_offsets[i] + offset_to_other;
@@ -65,7 +71,7 @@ Position Animal::choose_offset_for_offspring(Organism *other) {
 		}
 
 		if (!is_offset_included) {
-			offsets[i+OFFSET_COUNT] = other_offset;
+			offsets[offsets_count] = other_offset;
 			offsets_count++;
 		}
 	}
