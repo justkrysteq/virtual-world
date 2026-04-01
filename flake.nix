@@ -27,7 +27,7 @@
 		
 		a = pkgs.writeShellScriptBin "a" ''
 			#!${pkgs.bash}/bin/bash
-			if [ -f ./swallow-stars ]; then
+			if [ -f ./virtual-world ]; then
 				make clean;
 				make;
 			else
