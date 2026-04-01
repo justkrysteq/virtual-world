@@ -1,6 +1,7 @@
 #pragma once
 
 #include <random>
+#include <iostream>
 #include "colors.hpp"
 
 #define OFFSET_COUNT 8
@@ -22,7 +23,7 @@ enum OrganismType {
 
 class World;
 
-typedef struct Position {
+typedef struct Position { // TODO: move to a different file and move the definitions to cpp file
 	int x;
 	int y;
 
@@ -44,8 +45,20 @@ typedef struct Position {
 		return this->x == other.x && this->y == other.y;
 	}
 
+	bool operator>(const Position& other) const {
+		return this->x > other.x || this->y > other.y;
+	}
+
+	bool operator<(const Position& other) const {
+		return this->x < other.x || this->y < other.y;
+	}
+
 	bool operator!=(const Position& other) const {
 		return !(*this == other);
+	}
+
+	friend std::ostream& operator<<(std::ostream& os, const Position& p) {
+		return os << p.x << ' ' << p.y;
 	}
 } Position;
 
@@ -55,6 +68,7 @@ private:
 	char symbol;
 	Position position;
 	World *world;
+	bool is_alive;
 public:
 	inline static constexpr Position all_offsets[OFFSET_COUNT] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}, {-1, -1}, {1, -1}, {-1, 1}, {1, 1}};
 
@@ -65,7 +79,8 @@ public:
 		int color = 0,
 		int strength = 0,
 		int initiative = 0,
-		int age = 0
+		int age = 0,
+		bool is_alive = true
 	);
 
 	virtual void take_action() = 0;
@@ -79,8 +94,11 @@ public:
 	int get_strength() const;
 	int get_initiative() const;
 	int get_age() const;
+	void set_age(int age);
 	char get_symbol() const;
 	int get_color() const;
+	bool get_is_alive() const;
+	void set_is_alive(bool is_alive);
 	World *get_world();
 	enum OrganismType get_type() const;
 

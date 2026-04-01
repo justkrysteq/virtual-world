@@ -8,14 +8,32 @@ Organism::Organism(
 	int color,
 	int strength,
 	int initiative,
-	int age
-) : world(world), position(position), symbol(symbol), color(color), strength(strength), initiative(initiative), age(age) {
+	int age,
+	bool is_alive
+) : world(world), position(position), symbol(symbol), color(color), strength(strength), initiative(initiative), age(age), is_alive(is_alive) {
 }
 
 Position Organism::get_random_offset() {
-	std::uniform_int_distribution<int> offset(0, 7);
+	Position offsets[OFFSET_COUNT];
+	int offsets_count = 0;
 
-	return Organism::all_offsets[offset(this->world->get_rng())];
+	for (int i = 0; i < OFFSET_COUNT; i++) {
+		if (this->get_position() + Organism::all_offsets[i] > Position{this->get_world()->get_width() - 1, this->get_world()->get_height() - 1}
+			|| this->get_position() + Organism::all_offsets[i] < Position{0, 0}) {
+			continue;
+		}
+
+		offsets[offsets_count] = Organism::all_offsets[i];
+		offsets_count++;
+	}
+
+	if (offsets_count == 0) {
+		return Position{0, 0};
+	}
+
+	std::uniform_int_distribution<int> offset_index(0, offsets_count-1);
+
+	return offsets[offset_index(this->get_world()->get_rng())];
 }
 
 Position Organism::get_position() const {
@@ -31,7 +49,7 @@ void Organism::move(Position new_position) {
 void Organism::die() {
 	this->world->set_organism(this->position.x, this->position.y, nullptr);
 
-	delete this;
+	this->set_is_alive(false); // TODO: This is a memory leak, fix pls
 }
 
 int Organism::get_strength() const {
@@ -44,6 +62,18 @@ int Organism::get_initiative() const {
 
 int Organism::get_age() const {
 	return this->age;
+}
+
+void Organism::set_age(int age) {
+	this->age = age;
+}
+
+bool Organism::get_is_alive() const {
+	return this->is_alive;
+}
+
+void Organism::set_is_alive(bool is_alive) {
+	this->is_alive = is_alive;
 }
 
 char Organism::get_symbol() const {
@@ -104,6 +134,12 @@ Position Organism::get_random_free_offset(const Position *offsets, const int off
 	bool occupied[OFFSET_COUNT*2];
 
 	for (int i = 0; i < offsets_count; i++) {
+		if (this->get_position() + offsets[i] > Position{this->get_world()->get_width() - 1, this->get_world()->get_height() - 1}
+			|| this->get_position() + offsets[i] < Position{0, 0}) {
+			occupied[i] = true;
+			continue;
+		}
+
 		if (this->get_world()->get_organism(this->get_position().x + offsets[i].x, this->get_position().y + offsets[i].y) != nullptr) {
 			occupied[i] = true;
 		} else {
@@ -121,7 +157,11 @@ Position Organism::get_random_free_offset(const Position *offsets, const int off
 		}
 	}
 
-	std::uniform_int_distribution<int> offset_index(0, available_offsets_count);
+	if (available_offsets_count == 0) {
+		return Position{0, 0};
+	}
+
+	std::uniform_int_distribution<int> offset_index(0, available_offsets_count-1);
 
 	return available_offsets[offset_index(this->get_world()->get_rng())];
 }

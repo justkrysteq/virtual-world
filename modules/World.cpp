@@ -99,6 +99,10 @@ void World::initial_spawn_all() {
 
 	spawn_organism(WOLF, Position{10, 10});
 	spawn_organism(WOLF, Position{10, 11});
+
+	spawn_organism(SHEEP, Position{16, 10});
+	spawn_organism(SHEEP, Position{12, 11});
+	spawn_organism(SHEEP, Position{9, 10});
 }
 
 void World::next_turn() {
@@ -111,23 +115,21 @@ void World::next_turn() {
 
 			if (organism != nullptr) {
 				organisms_to_take_action[organisms_count] = organism;
-				mvwprintw(stdscr, 32+organisms_count, 0, "Found: %c", organism->get_symbol());
 				organisms_count++;
 			}
 		}
 	}
 
-	mvwprintw(stdscr, 30, 0, "Organisms: %d", organisms_count);
+	mvwprintw(stdscr, 40, 0, "Organisms: %d", organisms_count);
 
 	if (organisms_count > 1) {
 		qsort(organisms_to_take_action, organisms_count, sizeof(Organism *), this->compare_organisms);
 	}
 
-	// for (int i = 0; i < organisms_count; i++) {
-	// 	organisms_to_take_action[i]->take_action();
-	// }
-	
-	((Animal *) organisms_to_take_action[1])->collide(organisms_to_take_action[0]);
+	for (int i = 0; i < organisms_count; i++) {
+		organisms_to_take_action[i]->take_action();
+		organisms_to_take_action[i]->set_age(organisms_to_take_action[i]->get_age() + 1);
+	}
 
 	free(organisms_to_take_action);
 }
@@ -157,19 +159,19 @@ int World::compare_organisms(const void *a, const void *b) { // TODO: Check if i
 	Organism *organism_b = (Organism *) b;
 
 	if (organism_a->get_initiative() > organism_b->get_initiative()) {
-		return 1;
+		return -1;
 	}
 
 	if (organism_a->get_initiative() < organism_b->get_initiative()) {
-		return -1;
-	}
-
-	if (organism_a->get_age() > organism_b->get_age()) {
 		return 1;
 	}
 
-	if (organism_a->get_age() < organism_b->get_age()) {
+	if (organism_a->get_age() > organism_b->get_age()) {
 		return -1;
+	}
+
+	if (organism_a->get_age() < organism_b->get_age()) {
+		return 1;
 	}
 
 	return 0;

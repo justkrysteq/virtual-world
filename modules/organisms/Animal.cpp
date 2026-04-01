@@ -1,16 +1,30 @@
 #include "../../headers/organisms/Animal.hpp"
 #include "../../headers/World.hpp"
 
+#include <fstream> // TODO: Remove
+#include <iostream>
+#include <string>
+
+
 Animal::Animal(World *world, Position position, char symbol, int color, int strength, int initiative) : Organism(world, position, symbol, color, strength, initiative) {
 }
 
-void Animal::take_action() { // TODO: IMPORTANT: YOU NEED TO CHECK WORLD BOUNDARIES
+void Animal::take_action() {
 	if (this->get_omit_action()) {
 		this->set_omit_action(false);
 		return;
 	}
 
+	if (!this->get_is_alive()) {
+		return;
+	}
+
 	Position offset = this->get_random_offset();
+
+	if (offset == Position{0, 0}) {
+		return;
+	}
+
 	Position new_position = this->get_position() + offset;
 
 	if (this->get_world()->get_organism(new_position.x, new_position.y) != nullptr) {
@@ -30,27 +44,31 @@ void Animal::collide(Organism *other) {
 	Organism::collide(other);
 }
 
-void Animal::breed(Organism *other) { // TODO: Check if positions for offspring are valid
+void Animal::breed(Organism *other) {
 	this->set_omit_action(true);
 
 	Position offset_for_offspring = this->choose_offset_for_offspring(other);
-	this->get_world()->spawn_organism(this->get_type(), this->get_position() + offset_for_offspring);
 
-	return;
+	if (offset_for_offspring == Position{0, 0}) {
+		return;
+	}
+
+	this->get_world()->spawn_organism(this->get_type(), this->get_position() + offset_for_offspring);
 }
 
 Position Animal::choose_offset_for_offspring(Organism *other) { // Sets would solve this way easier
 	Position offsets[OFFSET_COUNT*2];
-	Position offset_to_other = this->get_position() - other->get_position();
+	Position offset_to_other = other->get_position() - this->get_position();
 	
 	int offsets_count = 0;
 
 	for (int i = 0; i < OFFSET_COUNT; i++) {
-		if (offsets[i] == offset_to_other) {
+		offsets[offsets_count] = Organism::all_offsets[i];
+
+		if (offsets[offsets_count] == offset_to_other) {
 			continue;
 		}
 
-		offsets[i] = Organism::all_offsets[i];
 		offsets_count++;
 	}
 
@@ -63,7 +81,7 @@ Position Animal::choose_offset_for_offspring(Organism *other) { // Sets would so
 
 		bool is_offset_included = false;
 
-		for (int j = 0; j < OFFSET_COUNT; j++) {
+		for (int j = 0; j < offsets_count; j++) {
 			if (other_offset == offsets[j]) {
 				is_offset_included = true;
 				break;
