@@ -6,5 +6,5 @@ Antelope::Antelope(World *world, Position position) : Animal(world, position, AN
 void Antelope::take_action() {
 }
 
-void Antelope::collide(Organism *organism) {
+void Antelope::collide(Organism *other) {
 }

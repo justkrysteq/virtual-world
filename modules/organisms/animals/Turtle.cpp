@@ -13,5 +13,10 @@ void Turtle::take_action() {
 
 }
 
-void Turtle::collide(Organism *organism) {
+void Turtle::collide(Organism *other) {
+	if (other->get_strength() < TURTLE_REPEL_STRENGTH && other->get_type() != TURTLE) {
+		return;
+	}
+
+	Animal::collide(other);
 }
