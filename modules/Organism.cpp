@@ -130,7 +130,7 @@ void Organism::collide(Organism *other) {
 	other->move(this->get_position());
 }
 
-Position Organism::get_random_free_offset(const Position *offsets, const int offsets_count) {
+Position Organism::get_random_free_offset(const Position *offsets, const int offsets_count, const bool strength_check) {
 	bool occupied[OFFSET_COUNT*2];
 
 	for (int i = 0; i < offsets_count; i++) {
@@ -140,7 +140,8 @@ Position Organism::get_random_free_offset(const Position *offsets, const int off
 			continue;
 		}
 
-		if (this->get_world()->get_organism(this->get_position().x + offsets[i].x, this->get_position().y + offsets[i].y) != nullptr) {
+		if (this->get_world()->get_organism(this->get_position().x + offsets[i].x, this->get_position().y + offsets[i].y) != nullptr
+			&& (!strength_check || this->get_world()->get_organism(this->get_position().x + offsets[i].x, this->get_position().y + offsets[i].y)->get_strength() > this->get_strength())) {
 			occupied[i] = true;
 		} else {
 			occupied[i] = false;

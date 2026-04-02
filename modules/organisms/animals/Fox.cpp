@@ -4,4 +4,5 @@ Fox::Fox(World *world, Position position) : Animal(world, position, FOX_SYMBOL, 
 }
 
 void Fox::take_action() {
+	Animal::take_action(this->get_random_free_offset(Organism::all_offsets, OFFSET_COUNT, true));
 }

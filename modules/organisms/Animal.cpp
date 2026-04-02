@@ -1,15 +1,10 @@
 #include "../../headers/organisms/Animal.hpp"
 #include "../../headers/World.hpp"
 
-#include <fstream> // TODO: Remove
-#include <iostream>
-#include <string>
-
-
 Animal::Animal(World *world, Position position, char symbol, int color, int strength, int initiative) : Organism(world, position, symbol, color, strength, initiative) {
 }
 
-void Animal::take_action() {
+void Animal::take_action(const Position &offset) {
 	if (this->get_omit_action()) {
 		this->set_omit_action(false);
 		return;
@@ -18,8 +13,6 @@ void Animal::take_action() {
 	if (!this->get_is_alive()) {
 		return;
 	}
-
-	Position offset = this->get_random_offset();
 
 	if (offset == Position{0, 0}) {
 		return;
@@ -33,6 +26,10 @@ void Animal::take_action() {
 		this->move(new_position);
 		// TODO: Print: Organism moved to {new_position.x, new_position.y}
 	}
+}
+
+void Animal::take_action() {
+	this->take_action(this->get_random_offset());
 }
 
 void Animal::collide(Organism *other) {

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdlib.h>
 #include <random>
 #include <ncurses.h>

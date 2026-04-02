@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../Animal.hpp"
 
 #define TURTLE_STRENGTH 2
