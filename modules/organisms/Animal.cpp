@@ -40,7 +40,14 @@ void Animal::collide(Organism *other) {
 		return;
 	}
 
-	Organism::collide(other);
+	if (this->get_strength() > other->get_strength()) {
+		other->die();
+
+		return;
+	}
+
+	this->die();
+	other->move(this->get_position());
 }
 
 void Animal::breed(Organism *other) {

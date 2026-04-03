@@ -119,15 +119,8 @@ enum OrganismType Organism::get_type() const {
 	}
 }
 
-void Organism::collide(Organism *other) {
-	if (this->get_strength() > other->get_strength()) {
-		other->die();
-
-		return;
-	}
-
-	this->die();
-	other->move(this->get_position());
+bool Organism::is_animal() const {
+	return this->get_type() == ANTELOPE || this->get_type() == CYBER_SHEEP || this->get_type() == FOX || this->get_type() == HUMAN || this->get_type() == SHEEP || this->get_type() == TURTLE || this->get_type() == WOLF;
 }
 
 Position Organism::get_random_free_offset(const Position *offsets, const int offsets_count, const bool strength_check) {

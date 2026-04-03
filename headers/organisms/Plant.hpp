@@ -17,6 +17,6 @@ public:
 	);
 
 	virtual void take_action();
-	virtual void collide(Organism *organism);
+	virtual void collide(Organism *other);
 	void spread();
 };

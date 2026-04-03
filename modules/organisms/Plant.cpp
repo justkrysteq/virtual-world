@@ -12,8 +12,14 @@ void Plant::take_action() {
 	}
 }
 
-void Plant::collide(Organism *organism) {
-	Organism::collide(organism);
+void Plant::collide(Organism *other) {
+	if (this->get_strength() > other->get_strength()) {
+		other->die();
+
+		return;
+	}
+
+	this->die();
 }
 
 void Plant::spread() {

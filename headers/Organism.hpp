@@ -84,7 +84,7 @@ public:
 	);
 
 	virtual void take_action() = 0;
-	virtual void collide(Organism *other);
+	virtual void collide(Organism *other) = 0;
 
 	Position get_random_offset(const Position *all_offsets = Organism::all_offsets, const int all_offsets_count = OFFSET_COUNT);
 	Position get_random_free_offset(const Position *offsets = Organism::all_offsets, const int offsets_count = OFFSET_COUNT, const bool strength_check = false);
@@ -92,7 +92,9 @@ public:
 	void move(Position new_position);
 
 	int get_strength() const;
+	void set_strength(int strength);
 	int get_initiative() const;
+	bool is_animal() const;
 	int get_age() const;
 	void set_age(int age);
 	char get_symbol() const;
