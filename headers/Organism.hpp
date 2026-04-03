@@ -86,8 +86,8 @@ public:
 	virtual void take_action() = 0;
 	virtual void collide(Organism *other);
 
-	Position get_random_offset();
-	Position get_random_free_offset(const Position *offsets = all_offsets, const int offsets_count = OFFSET_COUNT, const bool strength_check = false);
+	Position get_random_offset(const Position *all_offsets = Organism::all_offsets, const int all_offsets_count = OFFSET_COUNT);
+	Position get_random_free_offset(const Position *offsets = Organism::all_offsets, const int offsets_count = OFFSET_COUNT, const bool strength_check = false);
 	Position get_position() const;
 	void move(Position new_position);
 

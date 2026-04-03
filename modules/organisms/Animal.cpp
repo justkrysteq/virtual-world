@@ -1,6 +1,8 @@
 #include "../../headers/organisms/Animal.hpp"
 #include "../../headers/World.hpp"
 
+#include <cstdio>
+
 Animal::Animal(World *world, Position position, char symbol, int color, int strength, int initiative) : Organism(world, position, symbol, color, strength, initiative) {
 }
 

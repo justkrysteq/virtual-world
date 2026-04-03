@@ -20,7 +20,7 @@ public:
 
 	virtual void take_action(const Position &offset);
 	virtual void take_action();
-	virtual void collide(Organism *organism);
+	virtual void collide(Organism *other);
 
 	bool get_omit_action() const;
 	void set_omit_action(bool omit_action);

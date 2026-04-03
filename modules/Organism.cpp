@@ -13,17 +13,17 @@ Organism::Organism(
 ) : world(world), position(position), symbol(symbol), color(color), strength(strength), initiative(initiative), age(age), is_alive(is_alive) {
 }
 
-Position Organism::get_random_offset() {
-	Position offsets[OFFSET_COUNT];
+Position Organism::get_random_offset(const Position *all_offsets, const int all_offsets_count) {
+	Position offsets[all_offsets_count];
 	int offsets_count = 0;
 
-	for (int i = 0; i < OFFSET_COUNT; i++) {
-		if (this->get_position() + Organism::all_offsets[i] > Position{this->get_world()->get_width() - 1, this->get_world()->get_height() - 1}
-			|| this->get_position() + Organism::all_offsets[i] < Position{0, 0}) {
+	for (int i = 0; i < all_offsets_count; i++) {
+		if (this->get_position() + all_offsets[i] > Position{this->get_world()->get_width() - 1, this->get_world()->get_height() - 1}
+			|| this->get_position() + all_offsets[i] < Position{0, 0}) {
 			continue;
 		}
 
-		offsets[offsets_count] = Organism::all_offsets[i];
+		offsets[offsets_count] = all_offsets[i];
 		offsets_count++;
 	}
 
@@ -131,7 +131,7 @@ void Organism::collide(Organism *other) {
 }
 
 Position Organism::get_random_free_offset(const Position *offsets, const int offsets_count, const bool strength_check) {
-	bool occupied[OFFSET_COUNT*2];
+	bool *occupied = (bool *) malloc(offsets_count * sizeof(bool));
 
 	for (int i = 0; i < offsets_count; i++) {
 		if (this->get_position() + offsets[i] > Position{this->get_world()->get_width() - 1, this->get_world()->get_height() - 1}
@@ -148,7 +148,7 @@ Position Organism::get_random_free_offset(const Position *offsets, const int off
 		}
 	}
 
-	Position available_offsets[OFFSET_COUNT*2];
+	Position *available_offsets = (Position *) malloc(offsets_count * sizeof(Position));
 	int available_offsets_count = 0;
 
 	for (int i = 0; i < offsets_count; i++) {
@@ -164,7 +164,12 @@ Position Organism::get_random_free_offset(const Position *offsets, const int off
 
 	std::uniform_int_distribution<int> offset_index(0, available_offsets_count-1);
 
-	return available_offsets[offset_index(this->get_world()->get_rng())];
+	Position random_free_offset = available_offsets[offset_index(this->get_world()->get_rng())];
+
+	free(occupied);
+	free(available_offsets);
+
+	return random_free_offset;
 }
 
 Organism::~Organism() {

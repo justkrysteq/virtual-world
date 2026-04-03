@@ -97,12 +97,14 @@ void World::initial_spawn_all() {
 		}
 	}
 
-	spawn_organism(WOLF, Position{10, 10});
-	spawn_organism(WOLF, Position{10, 11});
+	spawn_organism(WOLF, Position{10, 14});
+	spawn_organism(WOLF, Position{10, 16});
+	spawn_organism(FOX, Position{10, 11});
+	spawn_organism(FOX, Position{10, 11});
 
-	spawn_organism(SHEEP, Position{16, 10});
-	spawn_organism(SHEEP, Position{12, 11});
-	spawn_organism(SHEEP, Position{9, 10});
+	spawn_organism(ANTELOPE, Position{16, 10});
+	spawn_organism(ANTELOPE, Position{12, 11});
+	spawn_organism(ANTELOPE, Position{9, 10});
 }
 
 void World::next_turn() {
