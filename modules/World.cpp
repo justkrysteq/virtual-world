@@ -15,6 +15,9 @@ World::World(int world_width, int world_height) {
 		}
 	}
 
+	this->human = new Human(this, Position{DEFAULT_WORLD_WIDTH/2, DEFAULT_WORLD_HEIGHT/2});
+	this->set_organism(DEFAULT_WORLD_WIDTH/2, DEFAULT_WORLD_HEIGHT/2, this->human);
+
 	initial_spawn_all();
 }
 
@@ -97,14 +100,18 @@ void World::initial_spawn_all() {
 		}
 	}
 
-	spawn_organism(WOLF, Position{10, 14});
-	spawn_organism(WOLF, Position{10, 16});
-	spawn_organism(FOX, Position{10, 11});
-	spawn_organism(FOX, Position{10, 11});
+	// spawn_organism(WOLF, Position{10, 14});
+	// spawn_organism(WOLF, Position{10, 16});
+	// spawn_organism(FOX, Position{10, 11});
+	spawn_organism(SOSNOWKIS_BORSCHT, Position{0, 11});
+	spawn_organism(SOSNOWKIS_BORSCHT, Position{20, 11});
+	spawn_organism(CYBER_SHEEP, Position{8, 5});
+	spawn_organism(GRASS, Position{0, 0});
+	spawn_organism(DANDELION, Position{13, 0});
 
-	spawn_organism(ANTELOPE, Position{16, 10});
-	spawn_organism(ANTELOPE, Position{12, 11});
-	spawn_organism(ANTELOPE, Position{9, 10});
+	// spawn_organism(ANTELOPE, Position{16, 10});
+	// spawn_organism(ANTELOPE, Position{12, 11});
+	// spawn_organism(ANTELOPE, Position{9, 10});
 }
 
 void World::next_turn() {
@@ -121,8 +128,6 @@ void World::next_turn() {
 			}
 		}
 	}
-
-	mvwprintw(stdscr, 40, 0, "Organisms: %d", organisms_count);
 
 	if (organisms_count > 1) {
 		qsort(organisms_to_take_action, organisms_count, sizeof(Organism *), this->compare_organisms);
@@ -148,6 +153,10 @@ Organism *World::get_organism(int x, int y) const {
 	return this->organisms[y][x];
 }
 
+Human *World::get_human() const {
+	return this->human;
+}
+
 void World::set_organism(int x, int y, Organism *organism) {
 	this->organisms[y][x] = organism;
 }
@@ -156,7 +165,7 @@ std::mt19937 &World::get_rng() {
 	return this->rng;
 }
 
-int World::compare_organisms(const void *a, const void *b) { // TODO: Check if it starts with the highest
+int World::compare_organisms(const void *a, const void *b) {
 	Organism *organism_a = (Organism *) a;
 	Organism *organism_b = (Organism *) b;
 

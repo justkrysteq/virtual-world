@@ -44,19 +44,43 @@ void Game::init_screen() {
 	cbreak();
 	noecho();
 	curs_set(0);
+	keypad(this->screen, TRUE);
 	this->init_colors();
 }
 
 void Game::handle_input() {
-	char key = (char) wgetch(stdscr);
+	int key = wgetch(stdscr);
 	switch (key) {
-		case 'q':
+		case KEY_QUIT:
 			this->is_running = false;
 			break;
-		case 'n':
+		case KEY_NEXT_TURN:
 			this->world->next_turn();
 			this->draw_world();
 			break;
+		case KEY_SPECIAL_ABILITY:
+			this->world->get_human()->activate_special_ability();
+			break;
+		case KEY_UP:
+		case KEY_LEFT:
+		case KEY_RIGHT:
+		case KEY_DOWN: {
+			if (this->world->get_human() == nullptr) {
+				break;
+			}
+
+			if (!this->world->get_human()->get_is_alive()) {
+				break;
+			}
+
+			int next_key;
+			do {
+				next_key = wgetch(stdscr);
+			} while (next_key != KEY_UP && next_key != KEY_LEFT && next_key != KEY_RIGHT && next_key != KEY_DOWN);
+
+			this->world->get_human()->translate_input_to_action(key, next_key);
+			break;
+		}
 		default:
 			break;
 	}

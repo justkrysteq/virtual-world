@@ -6,6 +6,12 @@
 #define BORDER_WIDTH 1
 #define HEADER_HEIGHT 1
 
+#define KEY_QUIT 'q'
+#define KEY_NEXT_TURN 'n'
+#define KEY_SPECIAL_ABILITY 'e'
+#define KEY_SAVE_WORLD 's'
+#define KEY_LOAD_WORLD 'l'
+
 class Game {
 private:
 	int turn_count;

@@ -23,5 +23,5 @@ void Plant::collide(Organism *other) {
 }
 
 void Plant::spread() {
-	this->get_world()->spawn_organism(this->get_type(), this->get_random_free_offset(Organism::all_offsets, OFFSET_COUNT));
+	this->get_world()->spawn_organism(this->get_type(), this->get_position() + this->get_random_free_offset());
 }

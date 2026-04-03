@@ -4,4 +4,7 @@ Dandelion::Dandelion(World *world, Position position) : Plant(world, position, D
 }
 
 void Dandelion::take_action() {
+	for (int i = 0; i < DANDELION_SPREAD_TRIES; i++) {
+		Plant::take_action();
+	}
 }

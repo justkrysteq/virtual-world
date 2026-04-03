@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <random>
 #include <ncurses.h>
 
@@ -31,6 +31,7 @@ private:
 	void initial_spawn_all();
 	std::mt19937 rng{std::random_device{}()};
 	static int compare_organisms(const void *a, const void *b);
+	Human *human;
 
 public:
 	World();
@@ -43,6 +44,7 @@ public:
 	// void next_organism();
 	std::mt19937 &get_rng();
 	void spawn_organism(enum OrganismType type, Position position);
+	Human *get_human() const;
 
 	~World();
 };

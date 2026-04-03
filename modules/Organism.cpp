@@ -56,6 +56,10 @@ int Organism::get_strength() const {
 	return this->strength;
 }
 
+void Organism::set_strength(int strength) {
+	this->strength = strength;
+}
+
 int Organism::get_initiative() const {
 	return this->initiative;
 }
@@ -163,6 +167,64 @@ Position Organism::get_random_free_offset(const Position *offsets, const int off
 	free(available_offsets);
 
 	return random_free_offset;
+}
+
+bool Organism::type_exists(enum OrganismType type) {
+	for (int y = 0; y < this->get_world()->get_height(); y++) {
+		for (int x = 0; x < this->get_world()->get_width(); x++) {
+			if (this->get_world()->get_organism(x, y) != nullptr && this->get_world()->get_organism(x, y)->get_type() == type) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+Organism *Organism::get_closest_of_type(enum OrganismType type) {
+	Organism *closest_organism = nullptr;
+	float closest_distance = std::numeric_limits<float>::max();
+
+	for (int y = 0; y < this->get_world()->get_height(); y++) {
+		for (int x = 0; x < this->get_world()->get_width(); x++) {
+			if (this->get_world()->get_organism(x, y) != nullptr && this->get_world()->get_organism(x, y)->get_type() == type) {
+				float distance = this->get_position().distance(this->get_world()->get_organism(x, y)->get_position());
+
+				if (distance < closest_distance) {
+					closest_distance = distance;
+					closest_organism = this->get_world()->get_organism(x, y);
+				}
+			}
+		}
+	}
+
+	return closest_organism;
+}
+
+void Organism::kill_adjacent_organisms(bool only_animals, bool cannot_be_cyber_sheep) {
+	Organism *adjacent_organisms[OFFSET_COUNT];
+	int adjacent_organisms_count = 0;
+
+	for (int i = 0; i < OFFSET_COUNT; i++) {
+		Position checked_position = this->get_position() + Organism::all_offsets[i];
+
+		if (checked_position < Position{0, 0} || checked_position > Position{this->get_world()->get_width() - 1, this->get_world()->get_height() - 1}) {
+			continue;
+		}
+
+		Organism *adjacent_organism = this->get_world()->get_organism(checked_position.x, checked_position.y);
+
+		if (adjacent_organism != nullptr
+			&& (!only_animals || adjacent_organism->is_animal())
+			&& (!cannot_be_cyber_sheep || adjacent_organism->get_type() != CYBER_SHEEP)) {
+			adjacent_organisms[adjacent_organisms_count] = adjacent_organism;
+			adjacent_organisms_count++;
+		}
+	}
+
+	for (int i = 0; i < adjacent_organisms_count; i++) {
+		adjacent_organisms[i]->die();
+	}
 }
 
 Organism::~Organism() {

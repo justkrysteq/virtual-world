@@ -1,7 +1,9 @@
 #pragma once
 
 #include <random>
+#include <cmath>
 #include <iostream>
+#include <limits>
 #include "colors.hpp"
 
 #define OFFSET_COUNT 8
@@ -57,8 +59,34 @@ typedef struct Position { // TODO: move to a different file and move the definit
 		return !(*this == other);
 	}
 
+	Position operator/(const float &other) const {
+		int new_x, new_y = 0;
+
+		if (this->x > 0) {
+			new_x = (this->x / other) > 0.5 ? 1 : 0;
+		}
+
+		if (this->x < 0) {
+			new_x = (this->x / other) < -0.5 ? -1 : 0;
+		}
+
+		if (this->y > 0) {
+			new_y = (this->y / other) > 0.5 ? 1 : 0;
+		}
+
+		if (this->y < 0) {
+			new_y = (this->y / other) < -0.5 ? -1 : 0;
+		}
+
+		return {new_x, new_y};
+	}
+
 	friend std::ostream& operator<<(std::ostream& os, const Position& p) {
 		return os << p.x << ' ' << p.y;
+	}
+
+	float distance(const Position &other) const {
+		return sqrt(pow(this->x - other.x, 2) + pow(this->y - other.y, 2));
 	}
 } Position;
 
@@ -103,6 +131,9 @@ public:
 	void set_is_alive(bool is_alive);
 	World *get_world();
 	enum OrganismType get_type() const;
+	bool type_exists(enum OrganismType type);
+	Organism *get_closest_of_type(enum OrganismType type);
+	void kill_adjacent_organisms(bool only_animals = false, bool cannot_be_cyber_sheep = false);
 
 	void die();
 
