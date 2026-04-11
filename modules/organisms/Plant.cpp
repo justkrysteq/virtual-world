@@ -20,6 +20,7 @@ void Plant::collide(Organism *other) {
 	}
 
 	this->die();
+	other->move(this->get_position());
 }
 
 void Plant::spread() {
