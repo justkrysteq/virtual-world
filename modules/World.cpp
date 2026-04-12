@@ -115,6 +115,8 @@ void World::initial_spawn_all() {
 }
 
 void World::next_turn() {
+	this->messages.clear();
+
 	Organism **organisms_to_take_action = (Organism **) malloc(this->world_height*this->world_width * sizeof(Organism *));
 	int organisms_count = 0;
 
@@ -130,7 +132,7 @@ void World::next_turn() {
 	}
 
 	if (organisms_count > 1) {
-		qsort(organisms_to_take_action, organisms_count, sizeof(Organism *), this->compare_organisms);
+		qsort(organisms_to_take_action, organisms_count, sizeof(Organism **), this->compare_organisms);
 	}
 
 	for (int i = 0; i < organisms_count; i++) {
@@ -166,8 +168,10 @@ std::mt19937 &World::get_rng() {
 }
 
 int World::compare_organisms(const void *a, const void *b) {
-	Organism *organism_a = (Organism *) a;
-	Organism *organism_b = (Organism *) b;
+	Organism * const *oa = (Organism * const *)a;
+	Organism * const *ob = (Organism * const *)b;
+	Organism *organism_a = *oa;
+	Organism *organism_b = *ob;
 
 	if (organism_a->get_initiative() > organism_b->get_initiative()) {
 		return -1;
@@ -186,6 +190,18 @@ int World::compare_organisms(const void *a, const void *b) {
 	}
 
 	return 0;
+}
+
+void World::add_message(std::string message) {
+	this->messages.push_back(message);
+}
+
+int World::get_message_count() const {
+	return this->messages.size();
+}
+
+std::string World::get_message(int index) const {
+	return this->messages[index];
 }
 
 World::~World() {

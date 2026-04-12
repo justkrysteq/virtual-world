@@ -18,6 +18,7 @@ private:
 	bool is_running;
 	WINDOW *screen;
 	WINDOW *world_window;
+	WINDOW *log_window;
 	std::unique_ptr<World> world;
 	void update();
 	void init_screen();
@@ -28,12 +29,11 @@ private:
 	void next_turn();
 	void draw_world();
 	void draw_log();
-	void draw_legend();
+	// void draw_legend();
+	void update_display();
 	// void next_organism();
 public:
 	Game();
 
 	void run();
-
-	// ~Game(); // Destructor - define if any additional resources need to be freed
 };

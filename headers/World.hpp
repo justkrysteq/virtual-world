@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <random>
 #include <ncurses.h>
+#include <vector>
 
 #include "organisms/animals/Antelope.hpp"
 #include "organisms/animals/CyberSheep.hpp"
@@ -27,6 +28,7 @@ private:
 	int world_width;
 	int world_height;
 	// int current_organism_index;
+	std::vector<std::string> messages;
 	Organism ***organisms;
 	void initial_spawn_all();
 	std::mt19937 rng{std::random_device{}()};
@@ -45,6 +47,9 @@ public:
 	std::mt19937 &get_rng();
 	void spawn_organism(enum OrganismType type, Position position);
 	Human *get_human() const;
+	void add_message(std::string message);
+	int get_message_count() const;
+	std::string get_message(int index) const;
 
 	~World();
 };

@@ -25,6 +25,7 @@ void Animal::take_action(const Position &offset) {
 	} else {
 		this->move(new_position);
 		// TODO: Print: Organism moved to {new_position.x, new_position.y}
+		this->get_world()->add_message(this->get_name() + std::string(" moved to ") + std::to_string(new_position.x) + " " + std::to_string(new_position.y));
 	}
 }
 
@@ -35,17 +36,21 @@ void Animal::take_action() {
 void Animal::collide(Organism *other) {
 	if (this->get_type() == other->get_type()) {
 		this->breed(other);
+		this->get_world()->add_message(this->get_name() + std::string(" bred with ") + other->get_name());
+
 		return;
 	}
 
 	if (this->get_strength() > other->get_strength()) {
 		other->die();
+		this->get_world()->add_message(this->get_name() + std::string(" killed ") + other->get_name());
 
 		return;
 	}
 
 	this->die();
 	other->move(this->get_position());
+	this->get_world()->add_message(this->get_name() + std::string(" was killed by ") + other->get_name());
 }
 
 void Animal::breed(Organism *other) {

@@ -27,8 +27,9 @@ void Game::run() {
 	this->init_screen();
 	mvwprintw(this->screen, 0, 0, "Virtual World");
 	this->world_window = subwin(this->screen, world_height+BORDER_WIDTH*2, world_width+BORDER_WIDTH*2, HEADER_HEIGHT, 0);
+	this->log_window = subwin(this->screen, LINES-HEADER_HEIGHT, COLS/2, HEADER_HEIGHT, COLS/2);
 
-	this->draw_world();
+	this->update_display();
 
 	while (this->is_running) {
 		this->handle_input();
@@ -56,7 +57,7 @@ void Game::handle_input() {
 			break;
 		case KEY_NEXT_TURN:
 			this->world->next_turn();
-			this->draw_world();
+			this->update_display();
 			break;
 		case KEY_SPECIAL_ABILITY:
 			this->world->get_human()->activate_special_ability();
@@ -89,6 +90,7 @@ void Game::handle_input() {
 void Game::draw_world() {
 	werase(this->world_window);
 	box(this->world_window, 0, 0);
+	mvwprintw(this->log_window, 0, 1, "World");
 
 	for (int y = 0; y < this->world->get_height(); y++) {
 		for (int x = 0; x < this->world->get_width(); x++) {
@@ -101,6 +103,31 @@ void Game::draw_world() {
 	}
 
 	wrefresh(this->world_window);
+}
+
+void Game::draw_log() {
+	werase(this->log_window);
+	box(this->log_window, 0, 0);
+	mvwprintw(this->log_window, 0, 1, "Logs");
+
+	if (this->world->get_message_count() > LINES-HEADER_HEIGHT-BORDER_WIDTH*2) {
+		mvwprintw(this->log_window, BORDER_WIDTH, BORDER_WIDTH, "[ ... ]");
+
+		for (int i = 1; i < LINES-HEADER_HEIGHT-BORDER_WIDTH*2; i++) {
+			mvwprintw(this->log_window, LINES-HEADER_HEIGHT-BORDER_WIDTH-i, BORDER_WIDTH, "%s", this->world->get_message(this->world->get_message_count()-i).c_str());
+		}
+	} else {
+		for (int i = 0; i < this->world->get_message_count(); i++) {
+			mvwprintw(this->log_window, i+BORDER_WIDTH, BORDER_WIDTH, "%s", this->world->get_message(i).c_str());
+		}
+	}
+
+	wrefresh(this->log_window);
+}
+
+void Game::update_display() {
+	this->draw_world();
+	this->draw_log();
 }
 
 void Game::init_colors() {

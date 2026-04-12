@@ -23,6 +23,19 @@ enum OrganismType {
 	WOLFBERRIES
 };
 
+#define ANTELOPE_NAME "Antelope"
+#define CYBER_SHEEP_NAME "Cyber Sheep"
+#define FOX_NAME "Fox"
+#define HUMAN_NAME "Human"
+#define SHEEP_NAME "Sheep"
+#define TURTLE_NAME "Turtle"
+#define WOLF_NAME "Wolf"
+#define DANDELION_NAME "Dandelion"
+#define GRASS_NAME "Grass"
+#define GUARANA_NAME "Guarana"
+#define SOSNOWKIS_BORSCHT_NAME "Sosnowskis Borscht"
+#define WOLFBERRIES_NAME "Wolfberries"
+
 class World;
 
 typedef struct Position { // TODO: move to a different file and move the definitions to cpp file
@@ -134,6 +147,7 @@ public:
 	bool type_exists(enum OrganismType type);
 	Organism *get_closest_of_type(enum OrganismType type);
 	void kill_adjacent_organisms(bool only_animals = false, bool cannot_be_cyber_sheep = false);
+	std::string get_name() const;
 
 	void die();
 

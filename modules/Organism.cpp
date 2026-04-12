@@ -227,5 +227,36 @@ void Organism::kill_adjacent_organisms(bool only_animals, bool cannot_be_cyber_s
 	}
 }
 
+std::string Organism::get_name() const {
+	switch (this->get_type()) {
+		case ANTELOPE:
+			return std::string(ANTELOPE_NAME);
+		case CYBER_SHEEP:
+			return std::string(CYBER_SHEEP_NAME);
+		case FOX:
+			return std::string(FOX_NAME);
+		case HUMAN:
+			return std::string(HUMAN_NAME);
+		case SHEEP:
+			return std::string(SHEEP_NAME);
+		case TURTLE:
+			return std::string(TURTLE_NAME);
+		case WOLF:
+			return std::string(WOLF_NAME);
+		case DANDELION:
+			return std::string(DANDELION_NAME);
+		case GRASS:
+			return std::string(GRASS_NAME);
+		case GUARANA:
+			return std::string(GUARANA_NAME);
+		case SOSNOWKIS_BORSCHT:
+			return std::string(SOSNOWKIS_BORSCHT_NAME);
+		case WOLFBERRIES:
+			return std::string(WOLFBERRIES_NAME);
+		default:
+			return std::string("Unknown");
+	}
+}
+
 Organism::~Organism() {
 }
