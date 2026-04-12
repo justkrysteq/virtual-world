@@ -14,11 +14,6 @@ World::World(int world_width, int world_height) {
 			this->organisms[y][x] = nullptr;
 		}
 	}
-
-	this->human = new Human(this, Position{DEFAULT_WORLD_WIDTH/2, DEFAULT_WORLD_HEIGHT/2});
-	this->set_organism(DEFAULT_WORLD_WIDTH/2, DEFAULT_WORLD_HEIGHT/2, this->human);
-
-	initial_spawn_all();
 }
 
 void World::spawn_organism(enum OrganismType type, Position position) {
@@ -65,6 +60,11 @@ void World::spawn_organism(enum OrganismType type, Position position) {
 void World::initial_spawn_all() {
 	Position used_positions[INITIAL_SPAWN_COUNT*ORGANISM_TYPE_COUNT];
 	int used_positions_count = 0;
+
+	this->human = new Human(this, Position{DEFAULT_WORLD_WIDTH/2, DEFAULT_WORLD_HEIGHT/2});
+	this->set_organism(DEFAULT_WORLD_WIDTH/2, DEFAULT_WORLD_HEIGHT/2, this->human);
+
+	used_positions[used_positions_count++] = this->human->get_position();
 
 	std::uniform_int_distribution<int> width_dist(0, this->world_width-1);
 	std::uniform_int_distribution<int> height_dist(0, this->world_height-1);
@@ -202,6 +202,10 @@ int World::get_message_count() const {
 
 std::string World::get_message(int index) const {
 	return this->messages[index];
+}
+
+void World::set_human(Human *human) {
+	this->human = human;
 }
 
 World::~World() {

@@ -24,7 +24,6 @@ void Animal::take_action(const Position &offset) {
 		this->get_world()->get_organism(new_position.x, new_position.y)->collide(this);
 	} else {
 		this->move(new_position);
-		// TODO: Print: Organism moved to {new_position.x, new_position.y}
 		this->get_world()->add_message(this->get_name() + std::string(" moved to ") + std::to_string(new_position.x) + " " + std::to_string(new_position.y));
 	}
 }

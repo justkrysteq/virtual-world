@@ -23,7 +23,7 @@ void Plant::collide(Organism *other) {
 
 	this->die();
 	other->move(this->get_position());
-	this->get_world()->add_message(this->get_name() + std::string(" was killed by ") + other->get_name());
+	this->get_world()->add_message(this->get_name() + std::string(" was eaten by ") + other->get_name());
 }
 
 void Plant::spread() {

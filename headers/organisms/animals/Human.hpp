@@ -39,4 +39,7 @@ public:
 	void translate_input_to_action(int key, int next_key);
 	void activate_special_ability();
 	void deactivate_special_ability();
+	bool is_special_ability_active() const;
+	int get_special_ability_cooldown() const;
+	void set_special_ability_cooldown(int special_ability_cooldown);
 };

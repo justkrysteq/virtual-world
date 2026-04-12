@@ -19,7 +19,7 @@ private:
 	WINDOW *screen;
 	WINDOW *world_window;
 	WINDOW *log_window;
-	std::unique_ptr<World> world;
+	World *world;
 	void update();
 	void init_screen();
 	void init_colors();
@@ -36,4 +36,6 @@ public:
 	Game();
 
 	void run();
+
+	~Game();
 };

@@ -120,3 +120,15 @@ void Human::translate_input_to_action(int key, int next_key) {
 			break;
 	}
 }
+
+bool Human::is_special_ability_active() const {
+	return this->special_ability_active;
+}
+
+int Human::get_special_ability_cooldown() const {
+	return this->special_ability_cooldown;
+}
+
+void Human::set_special_ability_cooldown(int special_ability_cooldown) {
+	this->special_ability_cooldown = special_ability_cooldown;
+}

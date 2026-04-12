@@ -30,7 +30,6 @@ private:
 	// int current_organism_index;
 	std::vector<std::string> messages;
 	Organism ***organisms;
-	void initial_spawn_all();
 	std::mt19937 rng{std::random_device{}()};
 	static int compare_organisms(const void *a, const void *b);
 	Human *human;
@@ -38,6 +37,7 @@ private:
 public:
 	World();
 	World(int world_width, int world_height);
+	void initial_spawn_all();
 	void next_turn();
 	int get_width() const;
 	int get_height() const;
@@ -50,6 +50,7 @@ public:
 	void add_message(std::string message);
 	int get_message_count() const;
 	std::string get_message(int index) const;
+	void set_human(Human *human);
 
 	~World();
 };
