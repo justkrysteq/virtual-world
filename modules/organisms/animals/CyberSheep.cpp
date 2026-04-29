@@ -1,7 +1,5 @@
 #include "../../../headers/organisms/animals/CyberSheep.hpp"
 
-#include <ncurses.h>
-
 CyberSheep::CyberSheep(World *world, Position position) : Animal(world, position, CYBER_SHEEP_SYMBOL, PAIR_CYBER_SHEEP, CYBER_SHEEP_STRENGTH, CYBER_SHEEP_INITIATIVE) {
 }
 

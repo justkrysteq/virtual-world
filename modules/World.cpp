@@ -61,8 +61,8 @@ void World::initial_spawn_all() {
 	Position used_positions[INITIAL_SPAWN_COUNT*ORGANISM_TYPE_COUNT];
 	int used_positions_count = 0;
 
-	this->human = new Human(this, Position{DEFAULT_WORLD_WIDTH/2, DEFAULT_WORLD_HEIGHT/2});
-	this->set_organism(DEFAULT_WORLD_WIDTH/2, DEFAULT_WORLD_HEIGHT/2, this->human);
+	this->human = new Human(this, Position{this->world_width/2 - 1, this->world_height/2 - 1});
+	this->set_organism(this->world_width/2 - 1, this->world_height/2 - 1, this->human);
 
 	used_positions[used_positions_count++] = this->human->get_position();
 
@@ -73,6 +73,10 @@ void World::initial_spawn_all() {
 		for (int type = 0; type < ORGANISM_TYPE_COUNT; type++) {
 			Position position = {width_dist(this->rng), height_dist(this->rng)};
 			bool is_position_used = false;
+
+			if ((OrganismType) type == HUMAN) {
+				continue;
+			}
 
 			// TODO: Implement: do not allow spawning on the same position twice (causes memory leaks)
 
@@ -103,15 +107,17 @@ void World::initial_spawn_all() {
 	// spawn_organism(WOLF, Position{10, 14});
 	// spawn_organism(WOLF, Position{10, 16});
 	// spawn_organism(FOX, Position{10, 11});
-	spawn_organism(SOSNOWKIS_BORSCHT, Position{0, 11});
-	spawn_organism(SOSNOWKIS_BORSCHT, Position{20, 11});
+	// spawn_organism(SOSNOWKIS_BORSCHT, Position{0, 11});
+	// spawn_organism(SOSNOWKIS_BORSCHT, Position{20, 11});
 	spawn_organism(CYBER_SHEEP, Position{8, 5});
 	spawn_organism(GRASS, Position{0, 0});
 	spawn_organism(DANDELION, Position{13, 0});
 
-	// spawn_organism(ANTELOPE, Position{16, 10});
-	// spawn_organism(ANTELOPE, Position{12, 11});
-	// spawn_organism(ANTELOPE, Position{9, 10});
+	spawn_organism(ANTELOPE, Position{16, 10});
+	spawn_organism(WOLF, Position{8, 13});
+	spawn_organism(GUARANA, Position{12, 1});
+	spawn_organism(ANTELOPE, Position{12, 11});
+	spawn_organism(ANTELOPE, Position{9, 10});
 }
 
 void World::next_turn() {

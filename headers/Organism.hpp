@@ -110,6 +110,9 @@ private:
 	Position position;
 	World *world;
 	bool is_alive;
+protected:
+	void kill_adjacent_organisms(bool only_animals = false, bool cannot_be_cyber_sheep = false);
+
 public:
 	inline static constexpr Position all_offsets[OFFSET_COUNT] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}, {-1, -1}, {1, -1}, {-1, 1}, {1, 1}};
 
@@ -146,7 +149,6 @@ public:
 	enum OrganismType get_type() const;
 	bool type_exists(enum OrganismType type);
 	Organism *get_closest_of_type(enum OrganismType type);
-	void kill_adjacent_organisms(bool only_animals = false, bool cannot_be_cyber_sheep = false);
 	std::string get_name() const;
 
 	void die();

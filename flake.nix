@@ -5,7 +5,7 @@
 		nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 	};
 
-	outputs = { self, nixpkgs }:
+	outputs = { nixpkgs, ... }:
 	let
 		pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
@@ -29,9 +29,9 @@
 			#!${pkgs.bash}/bin/bash
 			if [ -f ./virtual-world ]; then
 				make clean;
-				make;
+				make -j 12;
 			else
-				make;
+				make -j 12;
 			fi
 
 			./virtual-world

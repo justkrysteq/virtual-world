@@ -1,4 +1,3 @@
-#include "../../../headers/organisms/animals/Human.hpp"
 #include "../../../headers/World.hpp"
 
 Human::Human(World *world, Position position) : Animal(world, position, HUMAN_SYMBOL, PAIR_HUMAN, HUMAN_STRENGTH, HUMAN_INITIATIVE) {
@@ -15,7 +14,7 @@ void Human::take_action() {
 
 	if (this->special_ability_cooldown > 0) {
 		this->special_ability_cooldown--;
-	} else {
+	} else if (this->is_special_ability_active()) {
 		this->deactivate_special_ability();
 	}
 }
@@ -36,18 +35,20 @@ HumanAction Human::get_next_action() const {
 	return this->next_action;
 }
 
-void Human::activate_special_ability() {
+void Human::activate_special_ability() { // TODO: Now the ability acts asynchronously, make it scheduled for the next turn (cuz print issues) also there is a bug where pressing enenenenen will stop counting down the cooldown
 	if (this->special_ability_cooldown > 0) {
+		this->get_world()->add_message(this->get_name() + std::string(" needs to wait for ") + std::to_string(SPECIAL_ABILITY_COOLDOWN - this->special_ability_cooldown) + std::string(" more turns before activating special ability"));
 		return;
 	}
 
 	this->special_ability_active = true;
 	this->special_ability_cooldown = SPECIAL_ABILITY_COOLDOWN;
+	this->get_world()->add_message(this->get_name() + std::string(" activated special ability"));
 }
 
 void Human::deactivate_special_ability() {
 	this->special_ability_active = false;
-	this->special_ability_cooldown = SPECIAL_ABILITY_COOLDOWN;
+	this->get_world()->add_message(this->get_name() + std::string("'s special ability has been deactivated"));
 }
 
 Position Human::get_offset_for_action(HumanAction action) {

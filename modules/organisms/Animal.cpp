@@ -4,7 +4,7 @@
 Animal::Animal(World *world, Position position, char symbol, int color, int strength, int initiative) : Organism(world, position, symbol, color, strength, initiative) {
 }
 
-void Animal::take_action(const Position &offset) {
+void Animal::take_action(const Position &offset, const bool print_message) {
 	if (this->get_omit_action()) {
 		this->set_omit_action(false);
 		return;
@@ -24,8 +24,14 @@ void Animal::take_action(const Position &offset) {
 		this->get_world()->get_organism(new_position.x, new_position.y)->collide(this);
 	} else {
 		this->move(new_position);
-		this->get_world()->add_message(this->get_name() + std::string(" moved to ") + std::to_string(new_position.x) + " " + std::to_string(new_position.y));
+		if (print_message) {
+			this->get_world()->add_message(this->get_name() + std::string(" moved to ") + std::to_string(new_position.x) + " " + std::to_string(new_position.y));
+		}
 	}
+}
+
+void Animal::take_action(const Position &offset) {
+	this->take_action(offset, true);
 }
 
 void Animal::take_action() {

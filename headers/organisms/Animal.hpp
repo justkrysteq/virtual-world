@@ -18,6 +18,7 @@ public:
 		int initiative = 0
 	);
 
+	virtual void take_action(const Position &offset, const bool print_message);
 	virtual void take_action(const Position &offset);
 	virtual void take_action();
 	virtual void collide(Organism *other);

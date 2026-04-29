@@ -224,6 +224,8 @@ void Organism::kill_adjacent_organisms(bool only_animals, bool cannot_be_cyber_s
 
 	for (int i = 0; i < adjacent_organisms_count; i++) {
 		adjacent_organisms[i]->die();
+
+		this->get_world()->add_message(this->get_name() + std::string(" killed nearby ") + adjacent_organisms[i]->get_name());
 	}
 }
 

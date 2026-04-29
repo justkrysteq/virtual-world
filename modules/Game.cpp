@@ -8,13 +8,13 @@ void Game::run() {
 	printf("Input world size (default: 20 20): ");
 
 	int world_width, world_height;
-	// if (scanf("%d %d", &world_width, &world_height) != 2) {
-	// 	printf("Invalid world size!\n");
-	// 	world_width = DEFAULT_WORLD_WIDTH;
-	// 	world_height = DEFAULT_WORLD_HEIGHT;
-	// }
-	world_width = DEFAULT_WORLD_WIDTH*2;
-	world_height = DEFAULT_WORLD_HEIGHT;
+	if (scanf("%d %d", &world_width, &world_height) != 2) {
+		printf("Invalid world size!\n");
+		world_width = DEFAULT_WORLD_WIDTH;
+		world_height = DEFAULT_WORLD_HEIGHT;
+	}
+	// world_width = DEFAULT_WORLD_WIDTH*2;
+	// world_height = DEFAULT_WORLD_HEIGHT;
 
 	if (world_width == 0 || world_height == 0) {
 		this->world = new World(DEFAULT_WORLD_WIDTH, DEFAULT_WORLD_HEIGHT);
@@ -25,7 +25,7 @@ void Game::run() {
 	this->world->initial_spawn_all();
 
 	this->init_screen();
-	mvwprintw(this->screen, 0, 0, "[n]ext turn [<^v>]move [e]xtra ability [s]ave [l]oad [q]uit");
+	mvwprintw(this->screen, 0, 0, "Krystian Slupski 208219 - [n]ext turn [<^v>]move [e]xtra ability [s]ave [l]oad [q]uit");
 	this->world_window = subwin(this->screen, world_height+BORDER_WIDTH*2, world_width+BORDER_WIDTH*2, HEADER_HEIGHT, 0);
 	this->log_window = subwin(this->screen, LINES-HEADER_HEIGHT, COLS/2, HEADER_HEIGHT, COLS/2);
 
@@ -203,11 +203,20 @@ void Game::load_state() {
 		return;
 	}
 
+	if (this->world->get_width() < world_width || this->world->get_height() < world_height) {
+		return;
+	}
+
 	if (this->world != nullptr) {
 		delete this->world;
 	}
 
+	werase(this->world_window);
+	delwin(this->world_window);
+
 	this->world = new World(world_width, world_height);
+	this->world_window = subwin(this->screen, world_height+BORDER_WIDTH*2, world_width+BORDER_WIDTH*2, HEADER_HEIGHT, 0);
+	draw_world();
 
 	int type, x, y, strength, age, special_ability_active, special_ability_cooldown;
 
